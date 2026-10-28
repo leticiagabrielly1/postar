@@ -1,0 +1,170 @@
+[
+  {
+    "id": "PD-20260805091232",
+    "cliente": "gaby",
+    "email": "gaby@gmail.com",
+    "data": "2026-08-05T09:12:32",
+    "itens": [
+      {
+        "id": "combo-festa",
+        "imagem": "combo-festa",
+        "nome": "Combo Festa",
+        "preco": 229.9,
+        "qtd": 1
+      },
+      {
+        "id": "combo-50",
+        "imagem": "caixa",
+        "nome": "Combo 50",
+        "preco": 64.9,
+        "qtd": 1
+      }
+    ],
+    "total": 302.8,
+    "status": "Saiu para entrega",
+    "metodo_pagamento": "pix"
+  },
+  {
+    "id": "PD-20260805052154",
+    "cliente": "gaby",
+    "email": "gaby@gmail.com",
+    "data": "2026-08-05T05:21:54",
+    "itens": [
+      {
+        "id": "refrigerante-2l",
+        "imagem": "refri",
+        "nome": "Refrigerante 2 Litros",
+        "preco": 11.9,
+        "qtd": 1
+      }
+    ],
+    "total": 19.9,
+    "status": "Entregue",
+    "metodo_pagamento": "pix"
+  },
+  {
+    "id": "PD-20260805051539",
+    "cliente": "gaby",
+    "email": "gaby@gmail.com",
+    "data": "2026-08-05T05:15:39",
+    "itens": [
+      {
+        "id": "risole",
+        "imagem": "salgados",
+        "nome": "Risole",
+        "preco": 2.7,
+        "qtd": 1
+      }
+    ],
+    "total": 10.7,
+    "status": "Aguardando pagamento",
+    "metodo_pagamento": "entrega"
+  },
+  {
+    "id": "PD-20260805051439",
+    "cliente": "gaby",
+    "email": "gaby@gmail.com",
+    "data": "2026-08-05T05:14:39",
+    "itens": [
+      {
+        "id": "empada",
+        "imagem": "salgados",
+        "nome": "Empada",
+        "preco": 3.0,
+        "qtd": 1
+      },
+      {
+        "id": "refrigerante-2l",
+        "imagem": "refri",
+        "nome": "Refrigerante 2 Litros",
+        "preco": 11.9,
+        "qtd": 1
+      }
+    ],
+    "total": 22.9,
+    "status": "Aguardando pagamento",
+    "metodo_pagamento": "pix"
+  },
+  {
+    "id": "PD-010452",
+    "cliente": "LIANA MARIA DA SILVA BRITO",
+    "email": "lianamaria47@gmail.com",
+    "data": "2026-08-05T01:04:52",
+    "itens": [
+      {
+        "id": "empada",
+        "imagem": "salgados",
+        "nome": "Empada",
+        "preco": 3.0,
+        "qtd": 1
+      },
+      {
+        "id": "bolinha-de-queijo",
+        "imagem": "salgados",
+        "nome": "Bolinha de Queijo",
+        "preco": 2.5,
+        "qtd": 1
+      }
+    ],
+    "total": 5.5,
+    "status": "Em preparo"
+  },
+  {
+    "id": "PD-163448",
+    "cliente": "gaby",
+    "email": "gaby@gmail.com",
+    "data": "2026-08-04T16:34:48",
+    "itens": [
+      {
+        "id": "mini-coxinha",
+        "imagem": "coxinha",
+        "nome": "Mini Coxinha",
+        "preco": 2.5,
+        "qtd": 1
+      }
+    ],
+    "total": 2.5,
+    "status": "Entregue"
+  },
+  {
+    "id": "PD-163155",
+    "cliente": "gaby",
+    "email": "gaby@gmail.com",
+    "data": "2026-08-04T16:31:55",
+    "itens": [
+      {
+        "id": "combo-50",
+        "imagem": "caixa",
+        "nome": "Combo 50",
+        "preco": 64.9,
+        "qtd": 1
+      }
+    ],
+    "total": 64.9,
+    "status": "Entregue"
+  },
+  {
+    "id": "PD-141554",
+    "cliente": "Baptysta",
+    "email": "baptysta@gmail.com",
+    "data": "2026-08-04T14:15:54",
+    "itens": [
+      {
+        "id": "mini-coxinha",
+        "imagem": "coxinha",
+        "nome": "Mini Coxinha",
+        "preco": 2.5,
+        "qtd": 1
+      },
+      {
+        "id": "bolinha-de-queijo",
+        "imagem": "salgados",
+        "nome": "Bolinha de Queijo",
+        "preco": 2.5,
+        "qtd": 1
+      }
+    ],
+    "total": 5.0,
+    "status": "Entregue"
+  }
+]

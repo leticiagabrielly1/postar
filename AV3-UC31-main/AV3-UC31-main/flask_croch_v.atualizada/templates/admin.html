@@ -1,0 +1,861 @@
+{% extends "base.html" %}
+
+{% block titulo %}Painel Administrativo | CROCH Salgadaria{% endblock %}
+
+{% block estilos_especificos %}
+<style>
+    /* ================================================================
+       ABAS
+    ================================================================ */
+    .nav-tabs-custom {
+        border-bottom: 2px solid #e8f0ee;
+        margin-bottom: 24px;
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .nav-tabs-custom .nav-item {
+        margin-bottom: -2px;
+    }
+
+    .nav-tabs-custom .nav-link {
+        padding: 12px 24px;
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: #4a5a6a;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: transparent;
+        cursor: pointer;
+        border-radius: 8px 8px 0 0;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .nav-tabs-custom .nav-link:hover {
+        color: #1a2e3f;
+        background: #f5f9f8;
+    }
+
+    .nav-tabs-custom .nav-link.active {
+        color: #4a9e8f;
+        border-bottom-color: #4a9e8f;
+        background: #f5f9f8;
+    }
+
+    .nav-tabs-custom .nav-link .badge-tab {
+        background: #ff6b6b;
+        color: white;
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 50px;
+        margin-left: 6px;
+    }
+
+    /* Conteúdo das abas */
+    .tab-content {
+        display: none;
+        animation: fadeTab 0.3s ease;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    @keyframes fadeTab {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards */
+    .card-croch {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #f0f2f5;
+    }
+
+    /* Modo escuro */
+    body.modo-escuro .nav-tabs-custom {
+        border-bottom-color: #30363d;
+    }
+
+    body.modo-escuro .nav-tabs-custom .nav-link {
+        color: #8b949e;
+    }
+
+    body.modo-escuro .nav-tabs-custom .nav-link:hover {
+        color: #e6edf3;
+        background: #161b22;
+    }
+
+    body.modo-escuro .nav-tabs-custom .nav-link.active {
+        color: #58a6ff;
+        border-bottom-color: #58a6ff;
+        background: #161b22;
+    }
+
+    body.modo-escuro .card-croch {
+        background: #161b22;
+        border-color: #30363d;
+    }
+
+    body.modo-escuro .table {
+        color: #e6edf3;
+    }
+
+    body.modo-escuro .table-hover tbody tr:hover {
+        background: #21262d;
+    }
+
+    body.modo-escuro .text-muted {
+        color: #8b949e !important;
+    }
+
+    /* Responsivo */
+    @media (max-width: 600px) {
+        .nav-tabs-custom .nav-link {
+            padding: 8px 14px;
+            font-size: 12px;
+        }
+    }
+
+    /* Estilo das tabelas */
+    .table {
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+
+    .table th {
+        font-weight: 600;
+        color: #4a5a6a;
+        border-bottom: 2px solid #e8f0ee;
+        padding: 10px 8px;
+    }
+
+    .table td {
+        padding: 10px 8px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f0f2f5;
+    }
+
+    .table-hover tbody tr:hover {
+        background: #f5f9f8;
+    }
+
+    body.modo-escuro .table th {
+        color: #8b949e;
+        border-bottom-color: #30363d;
+    }
+
+    body.modo-escuro .table td {
+        border-bottom-color: #21262d;
+    }
+
+    /* Badges */
+    .badge {
+        padding: 4px 10px;
+        font-weight: 600;
+        font-size: 11px;
+        border-radius: 50px;
+    }
+
+    /* Resumo cards */
+    .resumo-card {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        border: 1px solid #f0f2f5;
+        transition: all 0.3s ease;
+    }
+
+    .resumo-card:hover {
+        border-color: #4a9e8f;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .resumo-card .numero {
+        font-size: 28px;
+        font-weight: 800;
+        color: #1a2e3f;
+        margin: 0;
+    }
+
+    .resumo-card .rotulo {
+        font-size: 13px;
+        color: #6c7a8a;
+        margin: 0;
+    }
+
+    body.modo-escuro .resumo-card {
+        background: #161b22;
+        border-color: #30363d;
+    }
+
+    body.modo-escuro .resumo-card .numero {
+        color: #e6edf3;
+    }
+
+    body.modo-escuro .resumo-card .rotulo {
+        color: #8b949e;
+    }
+
+    /* Campos */
+    .campo-croch {
+        border: 1px solid #e8f0ee;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .campo-croch:focus {
+        border-color: #4a9e8f;
+        box-shadow: 0 0 0 3px rgba(74, 158, 143, 0.1);
+        outline: none;
+    }
+
+    body.modo-escuro .campo-croch {
+        background: #0d1117;
+        border-color: #30363d;
+        color: #e6edf3;
+    }
+
+    body.modo-escuro .campo-croch:focus {
+        border-color: #58a6ff;
+        box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+    }
+
+    /* Botões */
+    .btn-croch {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: #4a9e8f;
+        color: white;
+    }
+
+    .btn-croch:hover {
+        background: #3a8a7a;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(74, 158, 143, 0.3);
+        color: white;
+    }
+
+    .btn-croch-outline {
+        padding: 8px 20px;
+        border: 2px solid #4a9e8f;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: transparent;
+        color: #4a9e8f;
+    }
+
+    .btn-croch-outline:hover {
+        background: #4a9e8f;
+        color: white;
+    }
+
+    .btn-sm {
+        padding: 4px 10px;
+        font-size: 12px;
+    }
+
+    .btn-success {
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-success:hover {
+        background: #218838;
+    }
+
+    .btn-warning {
+        background: #ffc107;
+        color: #212529;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-warning:hover {
+        background: #e0a800;
+    }
+
+    .btn-primary {
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background: #0069d9;
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-danger:hover {
+        background: #c82333;
+    }
+
+    body.modo-escuro .btn-success {
+        background: #2ea043;
+    }
+
+    body.modo-escuro .btn-warning {
+        background: #d29922;
+        color: white;
+    }
+
+    body.modo-escuro .btn-primary {
+        background: #1f6feb;
+    }
+
+    body.modo-escuro .btn-danger {
+        background: #da3633;
+    }
+
+    .form-select-sm {
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid #e8f0ee;
+        background: white;
+    }
+
+    body.modo-escuro .form-select-sm {
+        background: #0d1117;
+        border-color: #30363d;
+        color: #e6edf3;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .gap-1 {
+        gap: 4px;
+    }
+
+    .gap-2 {
+        gap: 8px;
+    }
+
+    .flex-wrap {
+        flex-wrap: wrap;
+    }
+
+    /* Chat */
+    .chat-mensagem {
+        background: #f5f9f8;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px;
+        border-left: 4px solid #4a9e8f;
+    }
+
+    .chat-mensagem .usuario {
+        font-weight: 700;
+        color: #1a2e3f;
+    }
+
+    .chat-mensagem .data {
+        font-size: 12px;
+        color: #6c7a8a;
+    }
+
+    .chat-mensagem .texto {
+        margin-top: 8px;
+        color: #2a3e4f;
+    }
+
+    .chat-resposta {
+        background: #e8f0ee;
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 8px;
+        border-left: 4px solid #238636;
+    }
+
+    .chat-resposta .admin {
+        font-weight: 700;
+        color: #238636;
+    }
+
+    body.modo-escuro .chat-mensagem {
+        background: #161b22;
+    }
+
+    body.modo-escuro .chat-mensagem .usuario {
+        color: #e6edf3;
+    }
+
+    body.modo-escuro .chat-mensagem .texto {
+        color: #8b949e;
+    }
+
+    body.modo-escuro .chat-resposta {
+        background: #0d1117;
+    }
+
+    body.modo-escuro .chat-resposta .admin {
+        color: #58a6ff;
+    }
+</style>
+{% endblock %}
+
+{% block conteudo %}
+<div class="container-croch py-4">
+    <h1 class="display-5 texto-primario">Painel Administrativo</h1>
+    <p class="texto-suave mb-4">Gerencie todos os aspectos da sua loja.</p>
+
+    <!-- ============================================================ -->
+    <!-- RESUMO -->
+    <!-- ============================================================ -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="resumo-card">
+                <p class="numero">{{ notificacoes.pedidos }}</p>
+                <p class="rotulo">Pedidos pendentes</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="resumo-card">
+                <p class="numero">{{ notificacoes.pagamentos_pendentes or 0 }}</p>
+                <p class="rotulo">Pagamentos pendentes</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="resumo-card">
+                <p class="numero">{{ notificacoes.mensagens }}</p>
+                <p class="rotulo">Mensagens</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="resumo-card">
+                <p class="numero">{{ notificacoes.comentarios }}</p>
+                <p class="rotulo">Comentarios</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ABAS -->
+    <!-- ============================================================ -->
+    <div class="nav-tabs-custom" role="tablist">
+        <button class="nav-link active" data-tab="tab-pedidos" role="tab">
+            Pedidos
+            <span class="badge-tab">{{ pedidos|length }}</span>
+        </button>
+        <button class="nav-link" data-tab="tab-produtos" role="tab">
+            Produtos
+            <span class="badge-tab">{{ produtos|length }}</span>
+        </button>
+        <button class="nav-link" data-tab="tab-usuarios" role="tab">
+            Usuarios
+            <span class="badge-tab">{{ usuarios|length }}</span>
+        </button>
+        <button class="nav-link" data-tab="tab-mensagens" role="tab">
+            Mensagens
+            <span class="badge-tab">{{ mensagens|length }}</span>
+        </button>
+        <button class="nav-link" data-tab="tab-chat" role="tab">
+            Chat
+            <span class="badge-tab">{{ comentarios|length }}</span>
+        </button>
+        <button class="nav-link" data-tab="tab-email" role="tab">
+            Enviar E-mail
+        </button>
+        <button class="nav-link" data-tab="tab-config" role="tab">
+            Configuracoes
+        </button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 1 - PEDIDOS -->
+    <!-- ============================================================ -->
+    <div id="tab-pedidos" class="tab-content active">
+        <div class="card-croch">
+            <h2 class="h5 texto-primario mb-3">Todos os Pedidos</h2>
+            
+            {% if pedidos %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Data</th>
+                            <th>Total</th>
+                            <th>Status Pedido</th>
+                            <th>Status Pagamento</th>
+                            <th>Acoes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pedido in pedidos %}
+                        {% set pagamento = None %}
+                        {% for p in pagamentos %}
+                            {% if p.pedido_id == pedido.id %}
+                                {% set pagamento = p %}
+                            {% endif %}
+                        {% endfor %}
+                        <tr>
+                            <td><strong>{{ pedido.id }}</strong></td>
+                            <td>{{ pedido.cliente }}</td>
+                            <td>{{ pedido.data|datahora }}</td>
+                            <td>{{ pedido.total|moeda }}</td>
+                            <td>
+                                <span class="badge 
+                                    {% if pedido.status == 'Entregue' %}bg-success
+                                    {% elif pedido.status == 'Saiu para entrega' %}bg-primary
+                                    {% elif pedido.status == 'Em preparo' %}bg-warning
+                                    {% elif pedido.status == 'Aguardando pagamento' %}bg-danger
+                                    {% else %}bg-secondary{% endif %}">
+                                    {{ pedido.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if pagamento %}
+                                    {% if pagamento.status == 'pago' %}
+                                        <span class="badge bg-success">Pago</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Pendente</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="badge bg-secondary">Sem pagamento</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1 flex-wrap">
+                                    {% if pagamento and pagamento.status != 'pago' %}
+                                    <form method="post" action="{{ url_for('admin_confirmar_pagamento', pedido_id=pedido.id) }}" style="display: inline;">
+                                        <button type="submit" class="btn btn-success btn-sm" title="Confirmar pagamento">
+                                            Pagar
+                                        </button>
+                                    </form>
+                                    {% endif %}
+
+                                    {% if pagamento and pagamento.status == 'pago' %}
+                                    <form method="post" action="{{ url_for('admin_cancelar_pagamento', pedido_id=pedido.id) }}" style="display: inline;">
+                                        <button type="submit" class="btn btn-warning btn-sm" title="Cancelar pagamento">
+                                            Cancelar
+                                        </button>
+                                    </form>
+                                    {% endif %}
+
+                                    <form method="post" action="{{ url_for('admin_alterar_status_pedido', pedido_id=pedido.id) }}" style="display: inline;">
+                                        <select name="status" class="form-select-sm" style="height: 28px;">
+                                            <option value="Saiu para entrega" {% if pedido.status == 'Saiu para entrega' %}selected{% endif %}>Saiu para entrega</option>
+                                            <option value="Entregue" {% if pedido.status == 'Entregue' %}selected{% endif %}>Entregue</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            Atualizar
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted">Nenhum pedido ainda.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 2 - PRODUTOS -->
+    <!-- ============================================================ -->
+    <div id="tab-produtos" class="tab-content">
+        <div class="card-croch">
+            <h2 class="h5 texto-primario mb-3">Produtos</h2>
+            
+            <form method="post" action="{{ url_for('admin_novo_produto') }}" enctype="multipart/form-data" class="row g-2 mb-3 p-3 border rounded-3">
+                <div class="col-md-3">
+                    <input class="campo-croch w-100" type="text" name="nome" placeholder="Nome do produto" required>
+                </div>
+                <div class="col-md-2">
+                    <input class="campo-croch w-100" type="text" name="categoria" placeholder="Categoria" value="Salgados">
+                </div>
+                <div class="col-md-2">
+                    <input class="campo-croch w-100" type="number" step="0.01" name="preco" placeholder="Preco" required>
+                </div>
+                <div class="col-md-3">
+                    <input class="campo-croch w-100" type="file" name="foto" accept="image/*">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn-croch w-100" type="submit">Adicionar</button>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Imagem</th>
+                            <th>Nome</th>
+                            <th>Categoria</th>
+                            <th>Preco</th>
+                            <th>Status</th>
+                            <th>Acoes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produto in produtos %}
+                        <tr>
+                            <td><img src="{{ imagem_de(produto.imagem) }}" alt="{{ produto.nome }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;"></td>
+                            <td>{{ produto.nome }}</td>
+                            <td>{{ produto.categoria }}</td>
+                            <td>{{ produto.preco|moeda }}</td>
+                            <td>
+                                {% if produto.disponivel %}
+                                    <span class="badge bg-success">Disponivel</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Indisponivel</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <a href="{{ url_for('admin_editar_produto', produto_id=produto.id) }}" class="btn btn-primary btn-sm">
+                                        Editar
+                                    </a>
+                                    <form method="post" action="{{ url_for('admin_excluir_produto', produto_id=produto.id) }}" style="display: inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza?')">
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 3 - USUARIOS -->
+    <!-- ============================================================ -->
+    <div id="tab-usuarios" class="tab-content">
+        <div class="card-croch">
+            <h2 class="h5 texto-primario mb-3">Usuarios</h2>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Papel</th>
+                            <th>Acoes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.nome }}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td>{{ usuario.telefone }}</td>
+                            <td>
+                                {% if usuario.papel == 'admin' %}
+                                    <span class="badge bg-danger">Admin</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Cliente</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if usuario.papel != 'admin' %}
+                                <form method="post" action="{{ url_for('admin_excluir_usuario', usuario_id=usuario.id) }}" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza?')">
+                                        Excluir
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 4 - MENSAGENS -->
+    <!-- ============================================================ -->
+    <div id="tab-mensagens" class="tab-content">
+        <div class="card-croch">
+            <h2 class="h5 texto-primario mb-3">Mensagens do Contato</h2>
+            
+            {% if mensagens %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Mensagem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for msg in mensagens %}
+                        <tr>
+                            <td>{{ msg.data|datahora }}</td>
+                            <td>{{ msg.nome }}</td>
+                            <td>{{ msg.telefone }}</td>
+                            <td>{{ msg.mensagem|truncate(50) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted">Nenhuma mensagem.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 5 - CHAT (COMENTARIOS) -->
+    <!-- ============================================================ -->
+    <div id="tab-chat" class="tab-content">
+        <div class="card-croch">
+            <h2 class="h5 texto-primario mb-3">💬 Chat - Comentarios dos Clientes</h2>
+            
+            {% if comentarios %}
+                {% for comentario in comentarios %}
+                <div class="chat-mensagem">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="usuario">{{ comentario.nome }}</span>
+                        <span class="data">{{ comentario.data|datahora }}</span>
+                    </div>
+                    <p class="texto mb-0">{{ comentario.mensagem }}</p>
+                    
+                    {% if comentario.resposta %}
+                    <div class="chat-resposta">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="admin">👨‍💼 Admin - {{ comentario.resposta.admin }}</span>
+                            <span class="data">{{ comentario.resposta.data|datahora }}</span>
+                        </div>
+                        <p class="texto mb-0 mt-1">{{ comentario.resposta.mensagem }}</p>
+                    </div>
+                    {% else %}
+                    <div class="mt-2">
+                        <form method="post" action="{{ url_for('admin_responder_chat', comentario_id=comentario.id) }}" class="d-flex gap-2">
+                            <input type="text" name="resposta" placeholder="Digite sua resposta..." class="campo-croch flex-grow-1" required>
+                            <button type="submit" class="btn-croch btn-sm">Responder</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+            <p class="text-muted">Nenhum comentario no chat.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 6 - ENVIAR E-MAIL -->
+    <!-- ============================================================ -->
+    <div id="tab-email" class="tab-content">
+        <div class="card-croch">
+            <h2 class="h5 texto-primario mb-3">Enviar E-mail para Clientes</h2>
+            
+            <form method="post" action="{{ url_for('admin_enviar_email') }}" class="row g-3">
+                <div class="col-12">
+                    <label class="rotulo-croch" for="assunto">Assunto</label>
+                    <input class="campo-croch w-100" type="text" name="assunto" id="assunto" placeholder="Assunto do e-mail" required>
+                </div>
+                <div class="col-12">
+                    <label class="rotulo-croch" for="corpo">Mensagem</label>
+                    <textarea class="campo-croch w-100" name="corpo" id="corpo" rows="5" placeholder="Escreva sua mensagem aqui..." required></textarea>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn-croch">
+                        Enviar para todos os clientes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 7 - CONFIGURACOES -->
+    <!-- ============================================================ -->
+    <div id="tab-config" class="tab-content">
+        <div class="card-croch">
+            <h2 class="h5 texto-primario mb-3">Configuracoes</h2>
+            
+            <form method="post" action="{{ url_for('admin_salvar_mapa') }}" class="row g-3">
+                <div class="col-12">
+                    <label class="rotulo-croch" for="mapa_url">URL do Google Maps</label>
+                    <input class="campo-croch w-100" type="url" name="mapa_url" id="mapa_url" placeholder="https://www.google.com/maps/embed?..." value="{{ config[0].mapa_url if config else '' }}">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn-croch">
+                        Salvar Configuracao
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// SISTEMA DE ABAS
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.nav-tabs-custom .nav-link');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const target = this.dataset.tab;
+
+            tabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+
+            contents.forEach(c => c.classList.remove('active'));
+
+            const targetContent = document.getElementById(target);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

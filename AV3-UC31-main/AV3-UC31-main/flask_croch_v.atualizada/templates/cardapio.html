@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cartao_produto %}
+
+{% block titulo %}Cardápio | CROCH Salgadaria{% endblock %}
+{% block descricao %}Veja o cardápio da CROCH: mini coxinha, bolinha de queijo, kibe, risole, enroladinho, empada, molhos, bebidas e combos.{% endblock %}
+
+{% block conteudo %}
+<div class="container-croch py-5">
+  <h1 class="display-4 text-center texto-primario">Nosso cardápio</h1>
+  <p class="text-center texto-suave">Escolha seus favoritos e monte o pedido perfeito para a sua festa.</p>
+
+  <form class="mx-auto mt-4" style="max-width:36rem" action="{{ url_for('cardapio') }}">
+    <label class="rotulo-croch" for="busca">Pesquisar produtos</label>
+    <input class="campo-croch mt-1" type="search" id="busca" name="q" value="{{ busca }}"
+           placeholder="Ex.: coxinha, kibe, combo...">
+    <input type="hidden" name="categoria" value="{{ categoria }}">
+  </form>
+
+  <div class="d-flex flex-wrap justify-content-center gap-2 mt-4" role="group" aria-label="Filtrar por categoria">
+    {% for c in categorias %}
+      <a class="{{ 'btn-croch' if categoria == c else 'btn-croch-outline' }}"
+         aria-pressed="{{ 'true' if categoria == c else 'false' }}"
+         href="{{ url_for('cardapio', q=busca, categoria=c) }}">{{ c }}</a>
+    {% endfor %}
+  </div>
+
+  <p class="text-center small texto-suave mt-4" aria-live="polite">
+    {{ produtos | length }} produto(s) encontrado(s)
+  </p>
+
+  {% if produtos %}
+    <div class="row g-4 mt-1">
+      {% for p in produtos %}
+        <div class="col-12 col-sm-6 col-lg-3">{{ cartao_produto(p) }}</div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-center fs-5 mt-5">Nenhum produto encontrado para a sua busca.</p>
+  {% endif %}
+</div>
+{% endblock %}

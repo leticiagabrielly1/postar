@@ -1,0 +1,106 @@
+[
+    {
+        "id": "p-001",
+        "nome": "Coxinha de Frango",
+        "categoria": "Salgados",
+        "descricao": "Coxinha tradicional com recheio de frango desfiado e catupiry",
+        "preco": 5.50,
+        "imagem": "coxinha",
+        "destaque": true,
+        "disponivel": true
+    },
+    {
+        "id": "p-002",
+        "nome": "Kibe",
+        "categoria": "Salgados",
+        "descricao": "Kibe assado com recheio de carne e hortelã",
+        "preco": 5.00,
+        "imagem": "salgados",
+        "destaque": false,
+        "disponivel": true
+    },
+    {
+        "id": "p-003",
+        "nome": "Esfiha de Carne",
+        "categoria": "Salgados",
+        "descricao": "Esfiha aberta com carne moída, tomate e cebola",
+        "preco": 6.00,
+        "imagem": "salgados",
+        "destaque": false,
+        "disponivel": true
+    },
+    {
+        "id": "p-004",
+        "nome": "Pão de Queijo",
+        "categoria": "Salgados",
+        "descricao": "Pão de queijo mineiro quentinho e macio",
+        "preco": 4.50,
+        "imagem": "salgados",
+        "destaque": false,
+        "disponivel": true
+    },
+    {
+        "id": "p-005",
+        "nome": "Refrigerante 350ml",
+        "categoria": "Bebidas",
+        "descricao": "Refrigerante em lata 350ml - Escolha seu sabor favorito",
+        "preco": 5.00,
+        "imagem": "refri",
+        "destaque": false,
+        "disponivel": true,
+        "sabores": ["Coca-Cola", "Guaraná", "Fanta Laranja", "Fanta Uva", "Sprite", "Pepsi"]
+    },
+    {
+        "id": "p-006",
+        "nome": "Refrigerante 2L",
+        "categoria": "Bebidas",
+        "descricao": "Refrigerante 2 Litros - Perfeito para festas e reuniões",
+        "preco": 12.00,
+        "imagem": "refri",
+        "destaque": false,
+        "disponivel": true,
+        "sabores": ["Coca-Cola", "Guaraná", "Fanta Laranja", "Sprite"]
+    },
+    {
+        "id": "p-007",
+        "nome": "Suco Natural",
+        "categoria": "Bebidas",
+        "descricao": "Suco natural feito na hora - 500ml",
+        "preco": 7.00,
+        "imagem": "salgados",
+        "destaque": false,
+        "disponivel": true,
+        "sabores": ["Laranja", "Limão", "Maracujá", "Abacaxi com Hortelã", "Melancia"]
+    },
+    {
+        "id": "p-008",
+        "nome": "Água Mineral",
+        "categoria": "Bebidas",
+        "descricao": "Água mineral 500ml - Natural ou com gás",
+        "preco": 3.00,
+        "imagem": "salgados",
+        "destaque": false,
+        "disponivel": true,
+        "sabores": ["Natural", "Com Gás"]
+    },
+    {
+        "id": "p-009",
+        "nome": "Brigadeiro",
+        "categoria": "Doces",
+        "descricao": "Brigadeiro tradicional com granulado",
+        "preco": 3.50,
+        "imagem": "salgados",
+        "destaque": false,
+        "disponivel": true
+    },
+    {
+        "id": "p-010",
+        "nome": "Beijinho",
+        "categoria": "Doces",
+        "descricao": "Beijinho de coco com leite condensado",
+        "preco": 3.50,
+        "imagem": "salgados",
+        "destaque": false,
+        "disponivel": true
+    }
+]

@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block titulo %}{{ produto.nome }} | CROCH Salgadaria{% endblock %}
+
+{% block estilos_especificos %}
+<style>
+    .produto-imagem-principal {
+        position: relative;
+        overflow: hidden;
+        border-radius: 16px;
+        transition: all 0.4s ease;
+        background: #f8f9fa;
+    }
+
+    .produto-imagem-principal img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .produto-imagem-principal:hover img {
+        transform: scale(1.05);
+    }
+
+    .badge-status {
+        padding: 6px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 50px;
+    }
+
+    .btn-voltar {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #4a9e8f;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        padding: 8px 0;
+    }
+
+    .btn-voltar:hover {
+        color: #3a8a7a;
+        transform: translateX(-5px);
+    }
+
+    .btn-voltar i {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-voltar:hover i {
+        transform: translateX(-5px);
+    }
+
+    .card-croch {
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .card-croch:hover {
+        box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+    }
+
+    body.modo-escuro .produto-imagem-principal {
+        background: #161b22;
+    }
+
+    body.modo-escuro .card-croch {
+        background: #161b22;
+        border: 1px solid #30363d;
+    }
+
+    body.modo-escuro .card-croch:hover {
+        box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    }
+
+    body.modo-escuro .breadcrumb-item a {
+        color: #58a6ff;
+    }
+
+    body.modo-escuro .breadcrumb-item.active {
+        color: #8b949e;
+    }
+
+    body.modo-escuro .breadcrumb-item::before {
+        color: #8b949e;
+    }
+
+    @media (max-width: 768px) {
+        .produto-imagem-principal img {
+            height: 250px;
+        }
+        .display-5 {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block conteudo %}
+<div class="container-croch py-5">
+    <!-- Botão Voltar -->
+    <div class="mb-4">
+        <a href="{{ url_for('cardapio') }}" class="btn-voltar">
+            <i class="fas fa-arrow-left"></i>
+            Voltar ao Cardápio
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Imagem -->
+        <div class="col-12 col-md-6">
+            <div class="card-croch p-3 produto-imagem-principal">
+                <img src="{{ imagem_de(produto.imagem) }}" alt="{{ produto.nome }}" loading="lazy">
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="col-12 col-md-6">
+            <div class="card-croch p-4">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('inicio') }}">Início</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('cardapio') }}">Cardápio</a></li>
+                        <li class="breadcrumb-item active">{{ produto.nome|truncate(30) }}</li>
+                    </ol>
+                </nav>
+
+                <h1 class="display-5 fw-bold texto-primario">{{ produto.nome }}</h1>
+                
+                <!-- Preço e Badges -->
+                <div class="my-3 d-flex align-items-center flex-wrap gap-2">
+                    <span class="display-6 fw-bold texto-primario">{{ produto.preco|moeda }}</span>
+                    {% if produto.destaque %}
+                    <span class="badge bg-warning text-dark badge-status">
+                        <i class="fas fa-star me-1"></i> Destaque
+                    </span>
+                    {% endif %}
+                    {% if not produto.disponivel %}
+                    <span class="badge bg-danger badge-status">
+                        <i class="fas fa-times-circle me-1"></i> Indisponível
+                    </span>
+                    {% else %}

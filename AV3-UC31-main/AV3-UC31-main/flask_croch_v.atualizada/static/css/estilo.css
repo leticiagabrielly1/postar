@@ -1,0 +1,339 @@
+
+/* ====================================================================
+   CROCH Salgadaria — folha de estilo principal
+   ==================================================================== */
+
+:root {
+  --radius: 0.9rem;
+  --background: oklch(0.976 0.017 95);
+  --foreground: oklch(0.24 0.03 40);
+  --card: oklch(0.99 0.01 95);
+  --primary: oklch(0.44 0.18 27);
+  --primary-foreground: oklch(0.98 0.014 95);
+  --secondary: oklch(0.38 0.11 152);
+  --secondary-foreground: oklch(0.98 0.014 95);
+  --muted: oklch(0.94 0.02 92);
+  --muted-foreground: oklch(0.44 0.03 60);
+  --accent: oklch(0.93 0.035 90);
+  --accent-foreground: oklch(0.32 0.09 30);
+  --gold: oklch(0.68 0.11 87);
+  --destructive: oklch(0.55 0.21 27);
+  --destructive-foreground: oklch(0.98 0.014 95);
+  --border: oklch(0.89 0.025 88);
+  --ring: oklch(0.44 0.18 27);
+  --shadow-card: 0 10px 30px -12px oklch(0.35 0.14 28 / 0.25);
+  --shadow-glow: 0 18px 40px -14px oklch(0.45 0.2 28 / 0.45);
+  --fonte-base: 100%;
+}
+
+body.escuro {
+  --background: oklch(0.19 0.02 40);
+  --foreground: oklch(0.95 0.015 90);
+  --card: oklch(0.24 0.025 38);
+  --primary: oklch(0.62 0.19 28);
+  --primary-foreground: oklch(0.16 0.02 40);
+  --secondary: oklch(0.52 0.13 152);
+  --secondary-foreground: oklch(0.97 0.014 95);
+  --muted: oklch(0.28 0.02 40);
+  --muted-foreground: oklch(0.76 0.02 85);
+  --accent: oklch(0.31 0.03 45);
+  --accent-foreground: oklch(0.95 0.015 90);
+  --gold: oklch(0.78 0.12 87);
+  --border: oklch(1 0 0 / 14%);
+  --ring: oklch(0.7 0.15 60);
+}
+
+body.contraste {
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0 0 0);
+  --primary: oklch(0.9 0.2 95);
+  --primary-foreground: oklch(0 0 0);
+  --secondary: oklch(0.85 0.2 145);
+  --secondary-foreground: oklch(0 0 0);
+  --muted: oklch(0.15 0 0);
+  --muted-foreground: oklch(0.95 0 0);
+  --accent: oklch(0.2 0 0);
+  --accent-foreground: oklch(1 0 0);
+  --gold: oklch(0.9 0.2 95);
+  --border: oklch(1 0 0);
+  --ring: oklch(0.9 0.2 95);
+}
+
+html {
+  font-size: var(--fonte-base);
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "DM Sans", system-ui, sans-serif;
+}
+
+h1, h2, h3, .font-display {
+  font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+  letter-spacing: 0.02em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Utilitários */
+.container-croch {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 80rem;
+  padding-inline: 1rem;
+}
+
+.card-croch {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 8px);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-croch-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-glow);
+}
+
+.texto-primario { color: var(--primary); }
+.texto-secundario { color: var(--secondary); }
+.texto-suave { color: var(--muted-foreground); }
+.texto-dourado { color: var(--gold); }
+.fundo-accent { background-color: var(--accent); }
+
+.pular-conteudo {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  z-index: 2000;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 var(--radius) 0;
+}
+.pular-conteudo:focus { left: 0; }
+
+/* Botões */
+.btn-croch, .btn-croch-outline, .btn-croch-perigo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.btn-croch { background-color: var(--primary); color: var(--primary-foreground); }
+.btn-croch-outline { background-color: transparent; color: var(--foreground); border-color: var(--border); }
+.btn-croch-perigo { background-color: var(--destructive); color: var(--destructive-foreground); }
+
+.btn-croch:hover, .btn-croch-outline:hover, .btn-croch-perigo:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.selo {
+  display: inline-block;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  padding: 0.15rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Formulário */
+.campo-croch {
+  width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--foreground);
+  padding: 0.5rem 0.85rem;
+}
+.rotulo-croch { font-weight: 600; font-size: 0.9rem; display: block; }
+.alerta-erro {
+  background: color-mix(in oklab, var(--destructive) 12%, transparent);
+  color: var(--destructive);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Acessibilidade */
+.barra-acessibilidade {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  font-size: 0.8rem;
+}
+.barra-acessibilidade button {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: inherit;
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+  font-size: 0.75rem;
+}
+
+/* Cabeçalho */
+.cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.2s ease;
+}
+.cabecalho.rolando { box-shadow: var(--shadow-card); }
+
+.link-nav {
+  color: var(--foreground);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+}
+.link-nav:hover, .link-nav.ativo { background: var(--accent); color: var(--accent-foreground); }
+
+.badge-carrinho {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  padding: 0.05rem 0.45rem;
+  font-weight: 700;
+}
+
+.sugestoes {
+  position: absolute;
+  z-index: 1200;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  list-style: none;
+  padding: 0.25rem;
+}
+.sugestoes li a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  color: var(--foreground);
+  text-decoration: none;
+}
+.sugestoes li a:hover { background: var(--accent); }
+
+/* Rodapé */
+.rodape {
+  margin-top: 4rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.rodape a { color: inherit; }
+
+/* Diversos */
+.hero { background: var(--accent); overflow: hidden; }
+
+.faixa-combo {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 0.35rem;
+}
+
+.voltar-topo {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 1040;
+  display: none;
+}
+.voltar-topo.visivel { display: inline-flex; }
+
+.aba-croch {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--foreground);
+  border-radius: 999px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+}
+.aba-croch.ativa {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}
+
+.toast-croch {
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  z-index: 1080;
+  min-width: 260px;
+  background: var(--card);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--secondary);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 0.85rem 1rem;
+  font-weight: 600;
+}
+.toast-croch.erro { border-left-color: var(--destructive); }
+
+/* --- ADMIN --- */
+.admin-page .container-croch { max-width: 72rem; }
+.admin-page .card-croch {
+  background-color: oklch(0.98 0.01 80);
+  border-color: oklch(0.9 0.02 80);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+.admin-page h1, .admin-page h2, .admin-page h3 {
+  color: oklch(0.3 0.03 40);
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.01em;
+}
+.admin-page .btn-croch { background-color: oklch(0.35 0.12 260); color: oklch(0.98 0.01 95); }
+.admin-page .btn-croch-outline { border-color: oklch(0.8 0.02 80); color: oklch(0.3 0.03 40); }
+.admin-page .btn-croch-outline:hover { background-color: oklch(0.95 0.01 80); }
+.admin-page .aba-croch.ativa { background-color: oklch(0.35 0.12 260); color: white; border-color: oklch(0.35 0.12 260); }
+.admin-page .texto-primario { color: oklch(0.35 0.12 260); }
+.admin-page .texto-secundario { color: oklch(0.5 0.08 160); }
+.admin-page .selo { background: oklch(0.5 0.08 160); color: white; }
+
+
+/* ====================================================================
+   CORREÇÃO SOLICITADA: DEIXAR OS CARDS DO CARDÁPIO QUADRADOS (FORÇADO)
+   ==================================================================== */
+
+.img-produto {
+  aspect-ratio: 1 / 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}

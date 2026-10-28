@@ -1,0 +1,1291 @@
+{# Layout base: cabeçalho, barra de acessibilidade, rodapé e avisos. #}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}CROCH Salgadaria{% endblock %}</title>
+  <meta name="description" content="{% block descricao %}Salgados fresquinhos e irresistíveis para todos os momentos.{% endblock %}">
+  <meta property="og:title" content="{% if self.titulo() %}{{ self.titulo() }}{% else %}CROCH Salgadaria{% endif %}">
+  <meta property="og:description" content="{% if self.descricao() %}{{ self.descricao() }}{% else %}Salgados fresquinhos e irresistíveis para todos os momentos.{% endif %}">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.jpg') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+  
+  <!-- FONT AWESOME PARA ÍCONES -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <style>
+    /* ========== RESET E BASE ========== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        min-height: 100vh;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        color: #1a2e3f;
+        background: linear-gradient(135deg, #f5f9f8 0%, #d4ece8 100%);
+        transition: background 0.3s, color 0.3s;
+        overflow-x: hidden;
+    }
+
+    /* ================================================================
+       ANIMAÇÃO DA FOTO DO PRODUTO (COXINHA)
+    ================================================================ */
+    .produto-imagem {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .produto-imagem img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: block;
+    }
+
+    /* Efeito de zoom suave ao passar o mouse */
+    .produto-imagem:hover img {
+        transform: scale(1.1) rotate(-2deg);
+    }
+
+    /* Efeito de brilho ao passar o mouse */
+    .produto-imagem::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+        opacity: 0;
+        transition: opacity 0.6s ease;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .produto-imagem:hover::before {
+        opacity: 1;
+    }
+
+    /* Sombra na imagem */
+    .produto-imagem::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40%;
+        background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .produto-imagem:hover::after {
+        opacity: 1;
+    }
+
+    /* Animação de entrada ao carregar a página */
+    .produto-card {
+        animation: fadeInUp 0.6s ease forwards;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    .produto-card:nth-child(1) { animation-delay: 0.05s; }
+    .produto-card:nth-child(2) { animation-delay: 0.10s; }
+    .produto-card:nth-child(3) { animation-delay: 0.15s; }
+    .produto-card:nth-child(4) { animation-delay: 0.20s; }
+    .produto-card:nth-child(5) { animation-delay: 0.25s; }
+    .produto-card:nth-child(6) { animation-delay: 0.30s; }
+    .produto-card:nth-child(7) { animation-delay: 0.35s; }
+    .produto-card:nth-child(8) { animation-delay: 0.40s; }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Efeito especial para a coxinha (se tiver classe específica) */
+    .produto-imagem.coxinha img {
+        animation: pulseCoxinha 3s ease-in-out infinite;
+    }
+
+    .produto-imagem.coxinha:hover img {
+        animation: pulseCoxinha 0.8s ease-in-out infinite;
+        transform: scale(1.15) rotate(-3deg);
+    }
+
+    @keyframes pulseCoxinha {
+        0%, 100% {
+            transform: scale(1) rotate(0deg);
+        }
+        50% {
+            transform: scale(1.03) rotate(1deg);
+        }
+    }
+
+    /* Badge de destaque com animação */
+    .badge-destaque {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #ff6b6b;
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        z-index: 2;
+        animation: pulseBadge 2s ease-in-out infinite;
+        box-shadow: 0 2px 10px rgba(255, 107, 107, 0.4);
+    }
+
+    @keyframes pulseBadge {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.08);
+        }
+    }
+
+    /* Ícone de olho/zoom */
+    .produto-imagem .zoom-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        color: white;
+        font-size: 30px;
+        z-index: 3;
+        background: rgba(74, 158, 143, 0.8);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        pointer-events: none;
+    }
+
+    .produto-imagem:hover .zoom-icon {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Pausar animações */
+    body.animacoes-pausadas .produto-card {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    body.animacoes-pausadas .produto-imagem img {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    body.animacoes-pausadas .produto-imagem:hover img {
+        transform: none !important;
+    }
+
+    body.animacoes-pausadas .badge-destaque {
+        animation: none !important;
+    }
+
+    body.animacoes-pausadas .produto-imagem::before,
+    body.animacoes-pausadas .produto-imagem::after {
+        display: none !important;
+    }
+
+    body.animacoes-pausadas .produto-imagem .zoom-icon {
+        display: none !important;
+    }
+
+    /* Modo escuro - mantém a animação */
+    body.modo-escuro .produto-imagem {
+        border: 1px solid #30363d;
+    }
+
+    body.modo-escuro .produto-imagem::before {
+        background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+    }
+
+    /* ========== BOTÃO WHATSAPP RODAPÉ ========== */
+    .btn-whatsapp-rodape {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: #25D366;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        width: 100%;
+    }
+
+    .btn-whatsapp-rodape:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
+        background: #20b85f !important;
+        color: white !important;
+    }
+
+    .btn-whatsapp-rodape:active {
+        transform: scale(0.97);
+    }
+
+    .btn-whatsapp-rodape i {
+        font-size: 22px;
+    }
+
+    body.modo-escuro .btn-whatsapp-rodape {
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
+    }
+
+    body.modo-escuro .btn-whatsapp-rodape:hover {
+        box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+    }
+
+    /* ========== INDICADOR DE FOCO TECLADO ========== */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+        outline: 3px solid #4a9e8f !important;
+        outline-offset: 3px !important;
+        box-shadow: 0 0 0 5px rgba(74, 158, 143, 0.2) !important;
+    }
+
+    /* ========== CURSOR AMPLIADO ========== */
+    body.cursor-grande * {
+        cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="black" opacity="0.3"/><circle cx="16" cy="16" r="10" fill="white" stroke="black" stroke-width="2"/><circle cx="16" cy="16" r="4" fill="black"/></svg>') 16 16, auto !important;
+    }
+
+    /* ========== MODO ESCURO MELHORADO ========== */
+    body.modo-escuro {
+        background: #0d1117 !important;
+        color: #e6edf3 !important;
+    }
+    
+    body.modo-escuro .cabecalho {
+        background: #161b22 !important;
+        border-bottom: 1px solid #30363d !important;
+    }
+    
+    body.modo-escuro .rodape {
+        background: #0d1117 !important;
+        border-top: 1px solid #30363d !important;
+    }
+    
+    body.modo-escuro .barra-acessibilidade {
+        background: #161b22 !important;
+        border-bottom: 1px solid #30363d !important;
+        color: #8b949e !important;
+    }
+    
+    body.modo-escuro .container-croch {
+        color: #e6edf3 !important;
+    }
+    
+    body.modo-escuro .link-nav {
+        color: #c9d1d9 !important;
+    }
+    
+    body.modo-escuro .link-nav:hover {
+        color: #58a6ff !important;
+    }
+    
+    body.modo-escuro .link-nav.ativo {
+        color: #58a6ff !important;
+        border-bottom-color: #58a6ff !important;
+    }
+    
+    body.modo-escuro .btn-croch {
+        background: #238636 !important;
+        color: #ffffff !important;
+    }
+    
+    body.modo-escuro .btn-croch:hover {
+        background: #2ea043 !important;
+    }
+    
+    body.modo-escuro .btn-croch-outline {
+        border-color: #30363d !important;
+        color: #c9d1d9 !important;
+    }
+    
+    body.modo-escuro .btn-croch-outline:hover {
+        background: #21262d !important;
+        border-color: #8b949e !important;
+    }
+    
+    body.modo-escuro .campo-croch {
+        background: #0d1117 !important;
+        border-color: #30363d !important;
+        color: #e6edf3 !important;
+    }
+    
+    body.modo-escuro .campo-croch:focus {
+        border-color: #58a6ff !important;
+        box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3) !important;
+    }
+    
+    body.modo-escuro .campo-croch::placeholder {
+        color: #8b949e !important;
+    }
+    
+    body.modo-escuro .badge-carrinho {
+        background: #238636 !important;
+        color: #ffffff !important;
+    }
+    
+    body.modo-escuro .toast-croch {
+        background: #161b22 !important;
+        border-color: #30363d !important;
+        color: #e6edf3 !important;
+    }
+    
+    body.modo-escuro .toast-croch.erro {
+        background: #4a1c1c !important;
+        border-color: #8b2d2d !important;
+        color: #f0c0c0 !important;
+    }
+    
+    body.modo-escuro .painel-acessibilidade {
+        background: #161b22 !important;
+        color: #e6edf3 !important;
+        border-color: #30363d !important;
+    }
+    
+    body.modo-escuro .painel-acessibilidade h3 {
+        color: #e6edf3 !important;
+        border-bottom-color: #30363d !important;
+    }
+    
+    body.modo-escuro .painel-acessibilidade .grupo-botoes button {
+        background: #21262d !important;
+        color: #c9d1d9 !important;
+    }
+    
+    body.modo-escuro .painel-acessibilidade .grupo-botoes button:hover {
+        background: #30363d !important;
+    }
+    
+    body.modo-escuro .painel-acessibilidade .grupo-botoes button.ativo {
+        background: #238636 !important;
+        color: #ffffff !important;
+    }
+    
+    body.modo-escuro .painel-acessibilidade .status-acessibilidade {
+        border-top-color: #30363d !important;
+        color: #8b949e !important;
+    }
+    
+    body.modo-escuro .acessibilidade-flutuante button {
+        background: #238636 !important;
+    }
+    
+    body.modo-escuro .acessibilidade-flutuante button:hover {
+        background: #2ea043 !important;
+    }
+    
+    body.modo-escuro .texto-dourado {
+        color: #f0883e !important;
+    }
+    
+    body.modo-escuro a {
+        color: #58a6ff !important;
+    }
+    
+    body.modo-escuro a:hover {
+        color: #79c0ff !important;
+    }
+    
+    body.modo-escuro .list-unstyled li {
+        color: #c9d1d9 !important;
+    }
+    
+    body.modo-escuro .border-top {
+        border-color: #30363d !important;
+    }
+    
+    body.modo-escuro .h5 {
+        color: #e6edf3 !important;
+    }
+    
+    body.modo-escuro .small {
+        color: #8b949e !important;
+    }
+    
+    body.modo-escuro .sugestoes {
+        background: #161b22 !important;
+        border-color: #30363d !important;
+    }
+    
+    body.modo-escuro .sugestoes li {
+        color: #e6edf3 !important;
+    }
+    
+    body.modo-escuro .sugestoes li:hover {
+        background: #21262d !important;
+    }
+
+    /* ========== ALTO CONTRASTE ========== */
+    body.contraste {
+        background: #000000 !important;
+        color: #ffffff !important;
+    }
+    body.contraste .cabecalho {
+        background: #222222 !important;
+        border-bottom: 2px solid #ffff00 !important;
+    }
+    body.contraste .rodape {
+        background: #111111 !important;
+        border-top: 3px solid #ffff00 !important;
+    }
+    body.contraste .painel-acessibilidade {
+        background: #222222 !important;
+        border: 2px solid #ffff00 !important;
+        color: #ffffff !important;
+    }
+    body.contraste .painel-acessibilidade h3 {
+        color: #ffff00 !important;
+        border-bottom-color: #ffff00 !important;
+    }
+    body.contraste .painel-acessibilidade button {
+        border: 2px solid #ffff00 !important;
+    }
+
+    /* ========== FONTE DISLEXIA ========== */
+    body.fonte-dislexia,
+    body.fonte-dislexia *,
+    body.fonte-dislexia *::before,
+    body.fonte-dislexia *::after {
+        font-family: 'OpenDyslexic', 'Inter', sans-serif !important;
+    }
+
+    /* ========== BOTÕES MAIORES ========== */
+    body.botoes-maiores button,
+    body.botoes-maiores .btn,
+    body.botoes-maiores .btn-croch,
+    body.botoes-maiores .btn-croch-outline {
+        padding: 14px 35px !important;
+        font-size: 18px !important;
+        border-radius: 30px !important;
+    }
+
+    /* ========== PAUSAR ANIMAÇÕES ========== */
+    body.animacoes-pausadas *,
+    body.animacoes-pausadas *::before,
+    body.animacoes-pausadas *::after {
+        animation-duration: 0.001s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001s !important;
+        animation-play-state: paused !important;
+    }
+
+    /* ========== DALTONISMO ========== */
+    body.daltonismo-protanopia { filter: url('#protanopia') !important; }
+    body.daltonismo-deuteranopia { filter: url('#deuteranopia') !important; }
+    body.daltonismo-tritanopia { filter: url('#tritanopia') !important; }
+
+    .filtros-daltonismo {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+    /* ========== ACESSIBILIDADE ========== */
+    .acessibilidade-flutuante {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 9999;
+    }
+
+    .acessibilidade-flutuante button {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border: none;
+        background: #4a9e8f;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .acessibilidade-flutuante button:hover {
+        transform: scale(1.1);
+        background: #3a8a7a;
+    }
+
+    .acessibilidade-flutuante button .badge-acessibilidade {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff6b6b;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    .painel-acessibilidade {
+        position: fixed;
+        right: 20px;
+        bottom: 100px;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 20px;
+        width: 300px;
+        max-height: 500px;
+        overflow-y: auto;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+        z-index: 9998;
+        display: none;
+        border: 1px solid rgba(74, 158, 143, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .painel-acessibilidade.aberto {
+        display: block;
+        animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .painel-acessibilidade h3 {
+        font-size: 16px;
+        color: #1a3a3f;
+        margin: 0 0 15px 0;
+        text-align: center;
+        font-weight: 700;
+        border-bottom: 2px solid #4a9e8f;
+        padding-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .painel-acessibilidade .grupo-botoes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .painel-acessibilidade .grupo-botoes button {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        flex: 1;
+        min-width: 50px;
+        max-width: 80px;
+        color: white;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        background: #4a9e8f;
+        position: relative;
+    }
+
+    .painel-acessibilidade .grupo-botoes button i {
+        font-size: 13px !important;
+    }
+
+    .painel-acessibilidade .grupo-botoes button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .painel-acessibilidade .grupo-botoes button:active {
+        transform: scale(0.95);
+    }
+
+    .painel-acessibilidade .grupo-botoes button.ativo {
+        background: #ff6b6b !important;
+        box-shadow: 0 0 0 3px #ff6b6b40;
+    }
+
+    .painel-acessibilidade .grupo-botoes button.ativo::after {
+        content: "✓";
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #ff6b6b;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .painel-acessibilidade .grupo-botoes .btn-vlibras {
+        background: #6c5ce7;
+        flex: 2;
+        max-width: 140px;
+    }
+
+    .painel-acessibilidade .grupo-botoes .btn-vlibras:hover {
+        background: #5f3dc4;
+    }
+
+    .painel-acessibilidade .grupo-botoes .btn-normal {
+        background: #868e96;
+    }
+
+    .painel-acessibilidade .grupo-botoes .btn-normal:hover {
+        background: #6c757d;
+    }
+
+    .painel-acessibilidade .status-acessibilidade {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #e9ecef;
+        font-size: 10px;
+        color: #6c757d;
+        flex-wrap: wrap;
+    }
+
+    .painel-acessibilidade .status-acessibilidade span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .painel-acessibilidade .status-acessibilidade .ativo-status {
+        color: #4a9e8f;
+        font-weight: 700;
+    }
+
+    @media (max-width: 600px) {
+        .painel-acessibilidade {
+            right: 10px;
+            bottom: 80px;
+            width: 260px;
+            padding: 15px;
+            max-height: 400px;
+        }
+        .painel-acessibilidade .grupo-botoes button {
+            font-size: 10px;
+            padding: 6px 8px;
+            min-width: 40px;
+            max-width: 65px;
+        }
+        .acessibilidade-flutuante button {
+            width: 48px;
+            height: 48px;
+            font-size: 20px;
+        }
+    }
+
+    /* ========== ESTILOS ESPECÍFICOS DE CADA PÁGINA ========== */
+    {% block estilos_especificos %}{% endblock %}
+  </style>
+</head>
+<body>
+  <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- Barra de acessibilidade (ORIGINAL) -->
+  <div class="barra-acessibilidade py-1">
+    <div class="container-croch d-flex flex-wrap align-items-center justify-content-between gap-2">
+      <span>Entrega rápida · (84) 99999-9999</span>
+      <div class="d-flex flex-wrap gap-2" role="group" aria-label="Acessibilidade">
+        <button type="button" data-acao="contraste">Alto contraste</button>
+        <button type="button" data-acao="tema">Tema claro/escuro</button>
+        <button type="button" data-acao="fonte-menos" aria-label="Diminuir fonte">A-</button>
+        <button type="button" data-acao="fonte-padrao" aria-label="Fonte padrão">A</button>
+        <button type="button" data-acao="fonte-mais" aria-label="Aumentar fonte">A+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cabeçalho - ORIGINAL -->
+  <header class="cabecalho">
+    <div class="container-croch d-flex flex-wrap align-items-center gap-3 py-2">
+      <a href="{% if is_admin %}{{ url_for('admin') }}{% else %}{{ url_for('inicio') }}{% endif %}" class="d-flex align-items-center gap-2 text-decoration-none">
+        <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logotipo da CROCH Salgadaria"
+             width="120" height="46" style="height:44px;width:auto;border-radius:8px;object-fit:cover">
+      </a>
+
+      <!-- Menu para administradores -->
+      {% if is_admin %}
+        <nav class="d-none d-lg-flex align-items-center gap-1" aria-label="Navegação administrativa">
+          <a class="link-nav {{ 'ativo' if request.endpoint == 'admin' }}" href="{{ url_for('admin') }}">Painel</a>
+        </nav>
+      {% else %}
+        <!-- Menu normal para clientes -->
+        <nav class="d-none d-lg-flex align-items-center gap-1" aria-label="Navegação principal">
+          <a class="link-nav {{ 'ativo' if request.endpoint == 'inicio' }}" href="{{ url_for('inicio') }}">Início</a>
+          <a class="link-nav {{ 'ativo' if request.endpoint == 'cardapio' }}" href="{{ url_for('cardapio') }}">Cardápio</a>
+          <a class="link-nav {{ 'ativo' if request.endpoint == 'sobre' }}" href="{{ url_for('sobre') }}">Sobre</a>
+          <a class="link-nav {{ 'ativo' if request.endpoint == 'contato' }}" href="{{ url_for('contato') }}">Contato</a>
+        </nav>
+      {% endif %}
+
+      <!-- Busca -->
+      {% if not is_admin %}
+        <form class="position-relative flex-grow-1" style="max-width:22rem" role="search" action="{{ url_for('cardapio') }}">
+          <label class="visually-hidden" for="busca-cabecalho">Pesquisar produtos</label>
+          <input class="campo-croch" type="search" id="busca-cabecalho" name="q" autocomplete="off"
+                 placeholder="Buscar salgados... (atalho /)" value="{{ request.args.get('q', '') }}">
+          <ul class="sugestoes" id="sugestoes" hidden></ul>
+        </form>
+      {% endif %}
+
+      <!-- Menu direito -->
+      <div class="d-flex align-items-center gap-2 ms-auto">
+        {% if not is_admin %}
+          <a class="link-nav" href="{{ url_for('carrinho_view') }}">
+            Carrinho <span class="badge-carrinho">{{ total_itens }}</span>
+          </a>
+        {% endif %}
+
+        {% if usuario %}
+          {% if not is_admin %}
+            <a class="link-nav" href="{{ url_for('meus_pedidos') }}">Meus pedidos</a>
+            <a class="link-nav" href="{{ url_for('chat') }}">Chat</a>
+            <a class="link-nav" href="{{ url_for('ajuda') }}">Ajuda</a>
+          {% endif %}
+          <a class="btn-croch-outline" href="{{ url_for('sair') }}">Sair</a>
+        {% else %}
+          <a class="link-nav" href="{{ url_for('login') }}">Entrar</a>
+          <a class="btn-croch" href="{{ url_for('cadastro') }}">Cadastrar</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Menu móvel -->
+    {% if is_admin %}
+      <nav class="container-croch d-flex d-lg-none flex-wrap gap-1 pb-2" aria-label="Navegação móvel admin">
+        <a class="link-nav" href="{{ url_for('admin') }}">Painel</a>
+      </nav>
+    {% else %}
+      <nav class="container-croch d-flex d-lg-none flex-wrap gap-1 pb-2" aria-label="Navegação móvel">
+        <a class="link-nav" href="{{ url_for('inicio') }}">Início</a>
+        <a class="link-nav" href="{{ url_for('cardapio') }}">Cardápio</a>
+        <a class="link-nav" href="{{ url_for('sobre') }}">Sobre</a>
+        <a class="link-nav" href="{{ url_for('contato') }}">Contato</a>
+      </nav>
+    {% endif %}
+  </header>
+
+  <!-- Avisos -->
+  {% with mensagens = get_flashed_messages(with_categories=true) %}
+    {% for categoria, texto in mensagens %}
+      <div class="toast-croch {{ 'erro' if categoria == 'erro' }}" role="status">{{ texto }}</div>
+    {% endfor %}
+  {% endwith %}
+
+  <main id="conteudo">
+    {% block conteudo %}{% endblock %}
+  </main>
+
+  <!-- Rodapé - COM WHATSAPP -->
+  <footer class="rodape">
+    <div class="container-croch row g-4 py-4">
+      <div class="col-12 col-md-3">
+        <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logotipo da CROCH Salgadaria"
+             width="160" height="60" loading="lazy" style="height:56px;width:auto;border-radius:8px;object-fit:cover">
+        <p class="mt-2 small">Salgados fresquinhos e irresistíveis para todos os momentos.</p>
+      </div>
+      <nav class="col-6 col-md-3" aria-label="Links do rodapé">
+        <h2 class="h5">Navegação</h2>
+        <ul class="list-unstyled small">
+          {% if is_admin %}
+            <li><a href="{{ url_for('admin') }}">Painel administrativo</a></li>
+          {% else %}
+            <li><a href="{{ url_for('cardapio') }}">Cardápio</a></li>
+            <li><a href="{{ url_for('meus_pedidos') }}">Meus pedidos</a></li>
+            <li><a href="{{ url_for('sobre') }}">Sobre nós</a></li>
+            <li><a href="{{ url_for('contato') }}">Contato</a></li>
+            <li><a href="{{ url_for('chat') }}">Chat</a></li>
+            <li><a href="{{ url_for('ajuda') }}">Central de Ajuda</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+      <div class="col-6 col-md-3">
+        <h2 class="h5">Diferenciais</h2>
+        <ul class="list-unstyled small">
+          <li><span class="texto-dourado fw-bold">Feitos</span> na hora</li>
+          <li><span class="texto-dourado fw-bold">Ingredientes</span> de qualidade</li>
+          <li><span class="texto-dourado fw-bold">Sabor que</span> encanta</li>
+          <li><span class="texto-dourado fw-bold">Entrega</span> rápida</li>
+        </ul>
+      </div>
+      <div class="col-12 col-md-3">
+        <h2 class="h5">Faça seu pedido</h2>
+        <!-- Botão WhatsApp -->
+        <a class="btn-whatsapp-rodape" 
+           href="https://wa.me/5584999999999?text=Olá!%20Gostaria%20de%20fazer%20um%20pedido!" 
+           target="_blank">
+          <i class="fab fa-whatsapp"></i>
+          (84) 99999-9999
+        </a>
+        <p class="mt-2 small">Seg a Sáb, das 8h às 20h</p>
+      </div>
+    </div>
+    <div class="border-top py-3 text-center small">
+      © {{ ano }} CROCH Salgadaria — Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <!-- PAINEL DE ACESSIBILIDADE COMPLETO -->
+  <div class="painel-acessibilidade" id="painelAcessibilidade" role="dialog" aria-label="Painel de acessibilidade">
+    <h3>
+      <i class="fas fa-universal-access" aria-hidden="true"></i>
+      Acessibilidade
+    </h3>
+
+    <div class="grupo-botoes">
+      <button onclick="acaoAcessibilidade('fonte-menos')" aria-label="Diminuir fonte" title="Diminuir fonte">
+        <i class="fas fa-minus" aria-hidden="true"></i> A−
+      </button>
+      <button onclick="acaoAcessibilidade('fonte-padrao')" aria-label="Fonte padrão" title="Fonte padrão">
+        <i class="fas fa-font" aria-hidden="true"></i> A
+      </button>
+      <button onclick="acaoAcessibilidade('fonte-mais')" aria-label="Aumentar fonte" title="Aumentar fonte">
+        <i class="fas fa-plus" aria-hidden="true"></i> A+
+      </button>
+    </div>
+
+    <div class="grupo-botoes">
+      <button onclick="acaoAcessibilidade('contraste')" aria-label="Alternar alto contraste" title="Alto contraste">
+        <i class="fas fa-circle-half-stroke" aria-hidden="true"></i> Contraste
+      </button>
+      <button onclick="acaoAcessibilidade('tema')" aria-label="Alternar modo escuro" title="Modo escuro">
+        <i class="fas fa-moon" aria-hidden="true"></i> Escuro
+      </button>
+    </div>
+
+    <div class="grupo-botoes">
+      <button onclick="acaoAcessibilidade('cursor')" aria-label="Alternar cursor ampliado" title="Cursor ampliado">
+        <i class="fas fa-mouse-pointer" aria-hidden="true"></i> Cursor
+      </button>
+      <button onclick="acaoAcessibilidade('dislexia')" aria-label="Alternar fonte para dislexia" title="Fonte dislexia">
+        <i class="fas fa-brain" aria-hidden="true"></i> Dislexia
+      </button>
+    </div>
+
+    <div class="grupo-botoes">
+      <button onclick="acaoAcessibilidade('animacoes')" aria-label="Pausar animações" title="Pausar animações">
+        <i class="fas fa-pause" aria-hidden="true"></i> Animações
+      </button>
+      <button onclick="acaoAcessibilidade('botoes')" aria-label="Botões maiores" title="Botões maiores">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i> Botões
+      </button>
+    </div>
+
+    <div class="grupo-botoes">
+      <button onclick="acaoAcessibilidade('daltonismo-protanopia')" aria-label="Simular protanopia" title="Protanopia">
+        <i class="fas fa-eye" aria-hidden="true"></i> Protan
+      </button>
+      <button onclick="acaoAcessibilidade('daltonismo-deuteranopia')" aria-label="Simular deuteranopia" title="Deuteranopia">
+        <i class="fas fa-eye" aria-hidden="true"></i> Deuter
+      </button>
+      <button onclick="acaoAcessibilidade('daltonismo-tritanopia')" aria-label="Simular tritanopia" title="Tritanopia">
+        <i class="fas fa-eye" aria-hidden="true"></i> Tritan
+      </button>
+      <button onclick="acaoAcessibilidade('daltonismo-normal')" class="btn-normal" aria-label="Restaurar cores normais" title="Cores normais">
+        <i class="fas fa-undo" aria-hidden="true"></i> Normal
+      </button>
+    </div>
+
+    <div class="grupo-botoes">
+      <button onclick="acaoAcessibilidade('vlibras')" class="btn-vlibras" aria-label="Abrir VLibras" title="VLibras - Libras">
+        <i class="fas fa-sign-language" aria-hidden="true"></i> VLibras
+      </button>
+      <button onclick="acaoAcessibilidade('reset')" class="btn-normal" aria-label="Resetar todas as configurações" title="Resetar">
+        <i class="fas fa-undo-alt" aria-hidden="true"></i> Reset
+      </button>
+    </div>
+
+    <div class="status-acessibilidade" id="statusAcessibilidade">
+      <span><i class="fas fa-circle" style="color: #4a9e8f; font-size: 8px;"></i> Status: <span id="statusTexto">Normal</span></span>
+    </div>
+  </div>
+
+  <!-- BOTÃO FLUTUANTE -->
+  <div class="acessibilidade-flutuante">
+    <button onclick="togglePainelAcessibilidade()" aria-label="Abrir painel de acessibilidade" id="btnAcessibilidade">
+      <i class="fas fa-universal-access" aria-hidden="true"></i>
+      <span class="badge-acessibilidade" id="badgeAcessibilidade">0</span>
+    </button>
+  </div>
+
+  <!-- FILTROS DALTONISMO -->
+  <svg class="filtros-daltonismo" aria-hidden="true">
+    <filter id="protanopia">
+      <feColorMatrix type="matrix" values="0.567,0.433,0,0,0 0.558,0.442,0,0,0 0,0.242,0.758,0,0 0,0,0,1,0"/>
+    </filter>
+    <filter id="deuteranopia">
+      <feColorMatrix type="matrix" values="0.625,0.375,0,0,0 0.7,0.3,0,0,0 0,0.3,0.7,0,0 0,0,0,1,0"/>
+    </filter>
+    <filter id="tritanopia">
+      <feColorMatrix type="matrix" values="0.95,0.05,0,0,0 0,0.433,0.567,0,0 0,0.475,0.525,0,0 0,0,0,1,0"/>
+    </filter>
+  </svg>
+
+  <!-- VLIBRAS - ESTRUTURA CORRETA -->
+  <div vw class="enabled" id="vlibrasWidget">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  
+  <!-- VLIBRAS - CARREGAMENTO CORRETO -->
+  <script>
+    // Carrega o VLibras APÓS todos os outros scripts
+    (function() {
+      // Função para carregar o VLibras
+      function carregarVLibras() {
+        if (typeof VLibras !== 'undefined') {
+          new VLibras.Widget('https://vlibras.gov.br/app');
+          console.log('✅ VLibras carregado com sucesso!');
+          return true;
+        }
+        return false;
+      }
+
+      // Tenta carregar imediatamente
+      if (!carregarVLibras()) {
+        // Se não funcionou, carrega o script
+        var script = document.createElement('script');
+        script.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
+        script.onload = function() {
+          carregarVLibras();
+        };
+        document.head.appendChild(script);
+      }
+
+      // Também tenta após um delay (fallback)
+      setTimeout(function() {
+        carregarVLibras();
+      }, 3000);
+    })();
+  </script>
+  
+  <script>
+    // ============================================================
+    // SISTEMA DE ACESSIBILIDADE (SEM PERSISTÊNCIA)
+    // ============================================================
+
+    (function() {
+      'use strict';
+
+      // Remove preferências salvas
+      localStorage.removeItem('pref_acessibilidade_croch');
+
+      let estado = {
+        contraste: false,
+        modoEscuro: false,
+        cursorGrande: false,
+        fonteDislexia: false,
+        animacoesPausadas: false,
+        botoesMaiores: false,
+        daltonismo: null,
+        fonte: null,
+        vlibrasAtivo: true // VLibras começa ativo!
+      };
+
+      const painel = document.getElementById('painelAcessibilidade');
+      const badge = document.getElementById('badgeAcessibilidade');
+
+      // Mostra o VLibras por padrão
+      const vlibrasWidget = document.getElementById('vlibrasWidget');
+      if (vlibrasWidget) {
+        vlibrasWidget.style.display = 'block';
+      }
+
+      window.togglePainelAcessibilidade = function() {
+        if (painel) {
+          painel.classList.toggle('aberto');
+        }
+      };
+
+      window.acaoAcessibilidade = function(acao) {
+        switch(acao) {
+          case 'fonte-menos':
+            ajustarFonte(-2);
+            break;
+          case 'fonte-padrao':
+            ajustarFonte(0);
+            break;
+          case 'fonte-mais':
+            ajustarFonte(2);
+            break;
+          case 'contraste':
+            toggleClasse('contraste');
+            break;
+          case 'tema':
+            toggleClasse('modo-escuro');
+            break;
+          case 'cursor':
+            toggleClasse('cursor-grande');
+            break;
+          case 'dislexia':
+            toggleClasse('fonte-dislexia');
+            break;
+          case 'animacoes':
+            toggleClasse('animacoes-pausadas');
+            break;
+          case 'botoes':
+            toggleClasse('botoes-maiores');
+            break;
+          case 'daltonismo-protanopia':
+            setDaltonismo('protanopia');
+            break;
+          case 'daltonismo-deuteranopia':
+            setDaltonismo('deuteranopia');
+            break;
+          case 'daltonismo-tritanopia':
+            setDaltonismo('tritanopia');
+            break;
+          case 'daltonismo-normal':
+            setDaltonismo(null);
+            break;
+          case 'vlibras':
+            toggleVLibras();
+            break;
+          case 'reset':
+            resetarTudo();
+            break;
+        }
+        atualizarInterface();
+      };
+
+      function toggleClasse(classe) {
+        document.body.classList.toggle(classe);
+        estado[classe] = document.body.classList.contains(classe);
+      }
+
+      function setDaltonismo(tipo) {
+        document.body.classList.remove('daltonismo-protanopia', 'daltonismo-deuteranopia', 'daltonismo-tritanopia');
+        if (tipo) {
+          document.body.classList.add('daltonismo-' + tipo);
+          estado.daltonismo = tipo;
+        } else {
+          estado.daltonismo = null;
+        }
+      }
+
+      function ajustarFonte(delta) {
+        const html = document.documentElement;
+        let atual = parseFloat(getComputedStyle(html).fontSize) || 16;
+        if (delta === 0) {
+          html.style.fontSize = '';
+          estado.fonte = null;
+        } else {
+          let nova = Math.max(12, Math.min(28, atual + delta));
+          html.style.fontSize = nova + 'px';
+          estado.fonte = nova;
+        }
+      }
+
+      function toggleVLibras() {
+        const widget = document.getElementById('vlibrasWidget');
+        if (widget) {
+          if (widget.style.display === 'none') {
+            widget.style.display = 'block';
+            estado.vlibrasAtivo = true;
+            // Tenta abrir o VLibras
+            setTimeout(function() {
+              const btn = document.querySelector('[vw-access-button]');
+              if (btn) btn.click();
+            }, 300);
+          } else {
+            widget.style.display = 'none';
+            estado.vlibrasAtivo = false;
+          }
+        }
+        atualizarInterface();
+      }
+
+      function resetarTudo() {
+        document.body.classList.remove(
+          'contraste', 'modo-escuro', 'cursor-grande',
+          'fonte-dislexia', 'animacoes-pausadas', 'botoes-maiores',
+          'daltonismo-protanopia', 'daltonismo-deuteranopia', 'daltonismo-tritanopia'
+        );
+        document.documentElement.style.fontSize = '';
+        
+        // VLibras volta a ficar visível
+        const widget = document.getElementById('vlibrasWidget');
+        if (widget) widget.style.display = 'block';
+        
+        estado = {
+          contraste: false, modoEscuro: false, cursorGrande: false,
+          fonteDislexia: false, animacoesPausadas: false, botoesMaiores: false,
+          daltonismo: null, fonte: null, vlibrasAtivo: true
+        };
+        atualizarInterface();
+      }
+
+      function atualizarInterface() {
+        const botoes = painel ? painel.querySelectorAll('.grupo-botoes button') : [];
+        botoes.forEach(btn => {
+          btn.classList.remove('ativo');
+          const acao = btn.getAttribute('onclick');
+          if (acao) {
+            const match = acao.match(/['"]([^'"]+)['"]/);
+            if (match && estaAtivo(match[1])) {
+              btn.classList.add('ativo');
+            }
+          }
+        });
+
+        if (badge) {
+          const ativos = contarAtivos();
+          badge.textContent = ativos;
+          badge.style.display = ativos > 0 ? 'flex' : 'none';
+        }
+
+        const statusTexto = document.getElementById('statusTexto');
+        if (statusTexto) {
+          const ativosLista = [];
+          if (estado.contraste) ativosLista.push('Contraste');
+          if (estado.modoEscuro) ativosLista.push('Escuro');
+          if (estado.cursorGrande) ativosLista.push('Cursor');
+          if (estado.fonteDislexia) ativosLista.push('Dislexia');
+          if (estado.animacoesPausadas) ativosLista.push('Animações pausadas');
+          if (estado.botoesMaiores) ativosLista.push('Botões maiores');
+          if (estado.daltonismo) ativosLista.push('Daltonismo');
+          if (estado.fonte) ativosLista.push(`Fonte ${estado.fonte}px`);
+          if (estado.vlibrasAtivo) ativosLista.push('VLibras');
+          statusTexto.textContent = ativosLista.length > 0 ? ativosLista.join(', ') : 'Normal';
+        }
+      }
+
+      function estaAtivo(acao) {
+        switch(acao) {
+          case 'contraste': return estado.contraste;
+          case 'tema': return estado.modoEscuro;
+          case 'cursor': return estado.cursorGrande;
+          case 'dislexia': return estado.fonteDislexia;
+          case 'animacoes': return estado.animacoesPausadas;
+          case 'botoes': return estado.botoesMaiores;
+          case 'daltonismo-protanopia': return estado.daltonismo === 'protanopia';
+          case 'daltonismo-deuteranopia': return estado.daltonismo === 'deuteranopia';
+          case 'daltonismo-tritanopia': return estado.daltonismo === 'tritanopia';
+          case 'vlibras': return estado.vlibrasAtivo;
+          default: return false;
+        }
+      }
+
+      function contarAtivos() {
+        let count = 0;
+        if (estado.contraste) count++;
+        if (estado.modoEscuro) count++;
+        if (estado.cursorGrande) count++;
+        if (estado.fonteDislexia) count++;
+        if (estado.animacoesPausadas) count++;
+        if (estado.botoesMaiores) count++;
+        if (estado.daltonismo) count++;
+        if (estado.fonte) count++;
+        if (estado.vlibrasAtivo) count++;
+        return count;
+      }
+
+      // Configura a barra existente
+      document.querySelectorAll('[data-acao]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const acao = this.getAttribute('data-acao');
+          switch (acao) {
+            case 'contraste': toggleClasse('contraste'); break;
+            case 'tema': toggleClasse('modo-escuro'); break;
+            case 'fonte-menos': ajustarFonte(-2); break;
+            case 'fonte-padrao': ajustarFonte(0); break;
+            case 'fonte-mais': ajustarFonte(2); break;
+          }
+          atualizarInterface();
+        });
+      });
+
+      // Fecha painel com ESC
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && painel) {
+          painel.classList.remove('aberto');
+        }
+        if (e.altKey && e.key === 'a') {
+          e.preventDefault();
+          togglePainelAcessibilidade();
+        }
+      });
+
+      // Fecha ao clicar fora
+      document.addEventListener('click', function(e) {
+        if (painel && painel.classList.contains('aberto')) {
+          const botao = document.querySelector('.acessibilidade-flutuante button');
+          if (!painel.contains(e.target) && !botao.contains(e.target)) {
+            painel.classList.remove('aberto');
+          }
+        }
+      });
+
+      // Inicializa
+      atualizarInterface();
+      console.log('✅ Acessibilidade inicializada!');
+    })();
+  </script>
+
+</body>
+</html>

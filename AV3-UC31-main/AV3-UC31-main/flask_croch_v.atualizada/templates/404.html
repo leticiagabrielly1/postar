@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block titulo %}Página não encontrada | CROCH Salgadaria{% endblock %}
+{% block descricao %}A página que você procura não existe na CROCH Salgadaria.{% endblock %}
+
+{% block conteudo %}
+<div class="container-croch py-5 text-center">
+  <h1 class="display-1 texto-primario">404</h1>
+  <p class="fs-5">Essa página saiu da fritadeira e não voltou.</p>
+  <a class="btn-croch" href="{{ url_for('inicio') }}">Voltar ao início</a>
+</div>
+{% endblock %}

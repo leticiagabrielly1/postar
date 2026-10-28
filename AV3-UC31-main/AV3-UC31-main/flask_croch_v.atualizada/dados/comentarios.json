@@ -1,0 +1,30 @@
+[
+  {
+    "id": "c-20260805091147",
+    "nome": "gaby",
+    "email": "gaby@gmail.com",
+    "mensagem": "asdcfvbgnm",
+    "data": "2026-08-05T09:11:47",
+    "resposta": null
+  },
+  {
+    "id": "c-20260804161105",
+    "nome": "Erica Santos",
+    "email": "emaildeericasantos1996@gmail.com",
+    "mensagem": "Oi, quero um combo",
+    "data": "2026-08-04T16:11:05",
+    "resposta": null
+  },
+  {
+    "id": "c-20260804160351",
+    "nome": "gaby",
+    "email": "gaby@gmail.com",
+    "mensagem": "muito bom",
+    "data": "2026-08-04T16:03:51",
+    "resposta": {
+      "mensagem": "dfrgth",
+      "data": "2026-08-04T16:07:14",
+      "admin": "Administrador CROCH"
+    }
+  }
+]

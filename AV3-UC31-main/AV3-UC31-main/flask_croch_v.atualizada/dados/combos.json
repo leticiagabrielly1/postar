@@ -1,0 +1,46 @@
+[
+    {
+        "id": "combo-20",
+        "nome": "Combo 20",
+        "categoria": "Combos",
+        "descricao": "20 salgados sortidos, feitos na hora. Perfeito para pequenos encontros.",
+        "preco": 29.90,
+        "unidades": 20,
+        "imagem": "caixa",
+        "destaque": false,
+        "disponivel": true
+    },
+    {
+        "id": "combo-50",
+        "nome": "Combo 50",
+        "categoria": "Combos",
+        "descricao": "50 salgados sortidos com mais variedade para reuniões e comemorações.",
+        "preco": 64.90,
+        "unidades": 50,
+        "imagem": "caixa",
+        "destaque": false,
+        "disponivel": true
+    },
+    {
+        "id": "combo-100",
+        "nome": "Combo 100",
+        "categoria": "Combos",
+        "descricao": "100 salgados sortidos com ótimo custo-benefício para grandes festas.",
+        "preco": 119.90,
+        "unidades": 100,
+        "imagem": "combo-festa",
+        "destaque": false,
+        "disponivel": true
+    },
+    {
+        "id": "combo-festa",
+        "nome": "Combo Festa",
+        "categoria": "Combos",
+        "descricao": "200 salgados sortidos + molhos especiais. O sabor que conquista todos os convidados.",
+        "preco": 229.90,
+        "unidades": 200,
+        "imagem": "combo-festa",
+        "destaque": true,
+        "disponivel": true
+    }
+]

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block titulo %}Acesso restrito | CROCH Salgadaria{% endblock %}
+{% block descricao %}Área exclusiva para administradores da CROCH Salgadaria.{% endblock %}
+
+{% block conteudo %}
+<div class="container-croch py-5 text-center">
+  <h1 class="display-5 texto-primario">Acesso restrito</h1>
+  <p class="fs-5">Entre com uma conta de administrador para acessar o painel.</p>
+  <a class="btn-croch" href="{{ url_for('login') }}">Entrar</a>
+</div>
+{% endblock %}

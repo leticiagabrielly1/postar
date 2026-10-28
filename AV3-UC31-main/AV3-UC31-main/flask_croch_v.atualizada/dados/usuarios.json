@@ -1,0 +1,69 @@
+[
+  {
+    "id": "u-admin",
+    "nome": "Administrador CROCH",
+    "email": "admin@croch.com",
+    "telefone": "(84) 99999-9999",
+    "senha": "admin123",
+    "papel": "admin"
+  },
+  {
+    "id": "u-cliente",
+    "nome": "Maria Cliente",
+    "email": "cliente@croch.com",
+    "telefone": "(84) 98888-8888",
+    "senha": "cliente123",
+    "papel": "cliente"
+  },
+  {
+    "id": "u-20260804141506",
+    "nome": "Baptysta",
+    "email": "baptysta@gmail.com",
+    "telefone": "88888888888",
+    "senha": "123456",
+    "papel": "cliente"
+  },
+  {
+    "id": "u-20260804144955",
+    "nome": "gaby",
+    "email": "gaby@gmail.com",
+    "telefone": "84987890269",
+    "senha": "12345678",
+    "papel": "cliente"
+  },
+  {
+    "id": "u-20260804160948",
+    "nome": "Erica Santos",
+    "email": "emaildeericasantos1996@gmail.com",
+    "telefone": "84981921744",
+    "senha": "918273",
+    "papel": "cliente"
+  },
+  {
+    "id": "u-20260804181332",
+    "nome": "Leticia Gabrielly",
+    "email": "leticiagabriellyleticia@gmail.com",
+    "telefone": "84986318955",
+    "senha": "Gaby19@",
+    "papel": "cliente",
+    "receber_email": true
+  },
+  {
+    "id": "u-20260805010350",
+    "nome": "LIANA MARIA DA SILVA BRITO",
+    "email": "lianamaria47@gmail.com",
+    "telefone": "84997006135",
+    "senha": "123456",
+    "papel": "cliente",
+    "receber_email": true
+  },
+  {
+    "id": "u-20260805112546",
+    "nome": "bap",
+    "email": "joaobapysta043@gmail.com",
+    "telefone": "84986318955",
+    "senha": "123456789",
+    "papel": "cliente",
+    "receber_email": true
+  }
+]

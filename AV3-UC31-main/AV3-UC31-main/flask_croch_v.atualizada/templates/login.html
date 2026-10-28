@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block titulo %}Entrar | CROCH Salgadaria{% endblock %}
+{% block descricao %}Acesse sua conta CROCH para acompanhar pedidos e finalizar compras.{% endblock %}
+
+{% block conteudo %}
+<div class="container-croch py-5">
+  <div class="card-croch mx-auto p-4" style="max-width:28rem">
+    <h1 class="display-6 texto-primario">Entrar</h1>
+    <p class="small texto-suave">Teste com <strong>admin@croch.com</strong> / <strong>admin123</strong></p>
+
+    <form class="d-grid gap-3 mt-3" method="post" novalidate>
+      {% if erro %}<p class="alerta-erro" role="alert">{{ erro }}</p>{% endif %}
+      <div>
+        <label class="rotulo-croch" for="email">E-mail</label>
+        <input class="campo-croch mt-1" id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div>
+        <label class="rotulo-croch" for="senha">Senha</label>
+        <input class="campo-croch mt-1" id="senha" name="senha" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn-croch w-100" type="submit">Entrar</button>
+    </form>
+
+    <p class="text-center small mt-3 mb-0">
+      Ainda não tem conta? <a class="fw-bold texto-primario" href="{{ url_for('cadastro') }}">Cadastre-se</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

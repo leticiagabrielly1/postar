@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block titulo %}Checkout | CROCH Salgadaria{% endblock %}
+
+{% block conteudo %}
+<div class="container-croch py-5">
+    <h1 class="display-4 texto-primario">Finalizar Pedido</h1>
+    <p class="texto-suave">Revise seu pedido e escolha a forma de pagamento.</p>
+
+    <div class="row g-4 mt-2">
+        <!-- Resumo do pedido -->
+        <div class="col-12 col-lg-7">
+            <div class="card-croch p-4">
+                <h2 class="h4 texto-primario mb-3">🛒 Seu Pedido</h2>
+                
+                {% for item in itens %}
+                <div class="d-flex align-items-center gap-3 py-2 border-bottom">
+                    <div style="width: 60px; height: 60px; border-radius: 8px; overflow: hidden; flex-shrink: 0;">
+                        <img src="{{ imagem_de(item.imagem) }}" alt="{{ item.nome }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="flex-grow-1">
+                        <p class="mb-0 fw-bold">{{ item.nome }}</p>
+                        <p class="mb-0 small text-muted">{{ item.qtd }} x {{ item.preco|moeda }}</p>
+                    </div>
+                    <div class="text-end">
+                        <p class="mb-0 fw-bold">{{ (item.preco * item.qtd)|moeda }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="mt-3">
+                    <div class="d-flex justify-content-between py-1">
+                        <span>Subtotal</span>
+                        <span>{{ total|moeda }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span>Entrega</span>
+                        <span>{{ entrega|moeda }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-top fw-bold">
+                        <span class="h5 mb-0">Total</span>
+                        <span class="h5 mb-0 texto-primario">{{ total_final|moeda }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forma de pagamento -->
+        <div class="col-12 col-lg-5">
+            <form method="post" action="{{ url_for('checkout_finalizar') }}">
+                <div class="card-croch p-4">
+                    <h2 class="h4 texto-primario mb-3">💳 Pagamento</h2>
+                    
+                    <div class="mb-3">
+                        <label class="fw-bold d-block mb-2">Selecione o método:</label>
+                        
+                        <!-- PIX -->
+                        <div class="form-check mb-2 p-3 border rounded-3 hover-card" style="cursor: pointer;">
+                            <input class="form-check-input" type="radio" name="metodo_pagamento" id="pix" value="pix" checked>
+                            <label class="form-check-label w-100" for="pix">
+                                <div class="d-flex align-items-center gap-3">
+                                    <span style="font-size: 28px;">💳</span>
+                                    <div>
+                                        <strong>PIX</strong>
+                                        <p class="mb-0 small text-muted">Pagamento instantâneo via código</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Pagamento na Entrega -->
+                        <div class="form-check mb-2 p-3 border rounded-3 hover-card" style="cursor: pointer;">
+                            <input class="form-check-input" type="radio" name="metodo_pagamento" id="entrega" value="entrega">
+                            <label class="form-check-label w-100" for="entrega">
+                                <div class="d-flex align-items-center gap-3">
+                                    <span style="font-size: 28px;">💰</span>
+                                    <div>
+                                        <strong>Pagamento na Entrega</strong>
+                                        <p class="mb-0 small text-muted">Pague em dinheiro ou cartão no ato da entrega</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-croch w-100 mt-2">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Finalizar Pedido
+                    </button>
+
+                    <div class="mt-3 text-center">
+                        <a href="{{ url_for('carrinho_view') }}" class="text-muted small">
+                            <i class="fas fa-arrow-left me-1"></i> Voltar ao carrinho
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.hover-card:hover {
+    background: #f5f9f8;
+    border-color: #4a9e8f !important;
+}
+body.modo-escuro .hover-card:hover {
+    background: #161b22;
+    border-color: #4a9e8f !important;
+}
+</style>
+{% endblock %}

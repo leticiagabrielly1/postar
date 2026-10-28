@@ -1,0 +1,36 @@
+{# Cartão de produto reutilizável. #}
+{% macro cartao_produto(produto) %}
+<article class="card-croch card-croch-hover d-flex flex-column overflow-hidden h-100">
+  <a href="{{ url_for('produto', produto_id=produto.id) }}" class="text-decoration-none">
+    <img src="{{ imagem_de(produto.imagem) }}" alt="{{ produto.nome }} da CROCH Salgadaria"
+         width="1024" height="768" loading="lazy" class="img-produto">
+  </a>
+  <div class="d-flex flex-column gap-2 p-3 flex-grow-1">
+    <span class="selo">{{ produto.categoria }}</span>
+    <h3 class="h4 texto-primario mb-0">
+      <a class="text-decoration-none texto-primario" href="{{ url_for('produto', produto_id=produto.id) }}">{{ produto.nome }}</a>
+    </h3>
+    <p class="small texto-suave mb-0">{{ produto.descricao }}</p>
+    <p class="texto-suave small mb-2">{{ produto.categoria }}</p>
+
+<!-- SABOR (se for bebida) -->
+{% if produto.categoria == 'Bebidas' and produto.sabores %}
+<div class="mb-2">
+    <select name="sabor" class="form-select form-select-sm" style="font-size: 12px; border-radius: 8px; border: 1px solid #e8f0ee; padding: 4px 8px; width: 100%;" required>
+        <option value="">Selecione o sabor</option>
+        {% for sabor in produto.sabores %}
+        <option value="{{ sabor }}">{{ sabor }}</option>
+        {% endfor %}
+    </select>
+</div>
+{% endif %}
+
+<p class="fw-bold texto-primario mb-2">{{ produto.preco|moeda }}</p>
+    <p class="font-display fs-3 texto-secundario mt-auto mb-0">{{ produto.preco | moeda }}</p>
+    <form method="post" action="{{ url_for('carrinho_adicionar', produto_id=produto.id) }}">
+      <input type="hidden" name="voltar" value="{{ request.full_path }}">
+      <button class="btn-croch w-100" type="submit">Adicionar ao carrinho</button>
+    </form>
+  </div>
+</article>
+{% endmacro %}

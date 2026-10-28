@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block titulo %}Sobre nós | CROCH Salgadaria{% endblock %}
+{% block descricao %}Conheça a história, missão, visão e valores da CROCH Salgadaria.{% endblock %}
+
+{% block conteudo %}
+<div class="container-croch py-5">
+  <h1 class="display-4 texto-primario">Nossa História</h1>
+  <div class="row g-4 mt-1">
+    <div class="col-12 col-md-6 texto-suave d-grid gap-3">
+      <p class="mb-0">
+        A Croc'k nasceu da paixão por oferecer alimentos saborosos, preparados com ingredientes de qualidade e muito cuidado. Desde o início, nosso objetivo sempre foi proporcionar momentos especiais por meio de salgados, cookies e outras delícias que unem sabor, praticidade e qualidade.
+      </p>
+      <p class="mb-0">
+        Ao longo da nossa trajetória, conquistamos a confiança dos nossos clientes com um atendimento dedicado e produtos preparados para atender diferentes ocasiões, desde um lanche rápido até festas e eventos.
+      </p>
+      <p class="mb-0">
+        Hoje, a Croc'k continua crescendo e inovando, levando mais praticidade para o dia a dia dos nossos clientes sem abrir mão do compromisso com a qualidade, o sabor e a satisfação em cada pedido.
+      </p>
+    </div>
+    <div class="col-12 col-md-6">
+      <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logotipo da CROCH Salgadaria"
+           width="800" height="800" loading="lazy" class="card-croch w-100" style="object-fit:contain; max-height: 400px; background: white; padding: 20px;">
+    </div>
+  </div>
+
+  <div class="row g-4 mt-4">
+    {% for pilar in [
+      {'titulo': 'Missão', 'texto': 'Levar sabor e alegria às festas com salgados feitos na hora, com carinho e ingredientes selecionados.'},
+      {'titulo': 'Visão', 'texto': 'Ser a salgaderia mais querida do estado, reconhecida pela qualidade e pelo atendimento próximo.'},
+      {'titulo': 'Valores', 'texto': 'Qualidade, honestidade, higiene, respeito ao cliente e paixão pela cozinha em cada detalhe.'}
+    ] %}
+      <div class="col-12 col-md-4">
+        <section class="card-croch p-4 h-100">
+          <h2 class="h3 texto-primario">{{ pilar.titulo }}</h2>
+          <p class="small texto-suave mb-0">{{ pilar.texto }}</p>
+        </section>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

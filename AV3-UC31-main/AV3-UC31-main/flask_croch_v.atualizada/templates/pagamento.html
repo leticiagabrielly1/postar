@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block titulo %}Pagamento | CROCH Salgadaria{% endblock %}
+
+{% block conteudo %}
+<div class="container-croch py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="card-croch p-4">
+                <h1 class="display-4 texto-primario text-center">💰 Pagamento</h1>
+                <p class="text-center texto-suave">Pedido: <strong>{{ pedido.id }}</strong></p>
+
+                <!-- Status do pedido -->
+                <div class="alert alert-info text-center mb-4">
+                    <i class="fas fa-clock me-2"></i>
+                    Seu pedido está aguardando pagamento. 
+                    {% if pedido.metodo_pagamento == 'pix' %}
+                        Realize o PIX para confirmar.
+                    {% elif pedido.metodo_pagamento == 'entrega' %}
+                        Você pagará no ato da entrega.
+                    {% endif %}
+                </div>
+
+                <div class="row g-3 mt-2">
+                    <div class="col-12 col-md-6">
+                        <div class="p-3 bg-light rounded-3 h-100">
+                            <h3 class="h5 texto-primario">📋 Resumo</h3>
+                            <p class="mb-1"><strong>Cliente:</strong> {{ pedido.cliente }}</p>
+                            <p class="mb-1"><strong>Data:</strong> {{ pedido.data|datahora }}</p>
+                            <p class="mb-1"><strong>Itens:</strong> {{ pedido.itens|length }} produto(s)</p>
+                            <p class="h4 text-success mt-2">Total: {{ pedido.total|moeda }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <div class="p-3 bg-success bg-opacity-10 rounded-3 h-100">
+                            <h3 class="h5 texto-primario">💳 Método de Pagamento</h3>
+                            <p class="mb-1">
+                                {% if pedido.metodo_pagamento == 'pix' %}
+                                    <span class="badge bg-success fs-6">PIX</span>
+                                {% elif pedido.metodo_pagamento == 'entrega' %}
+                                    <span class="badge bg-warning fs-6">Pagamento na Entrega</span>
+                                {% else %}
+                                    <span class="badge bg-secondary fs-6">{{ pedido.metodo_pagamento }}</span>
+                                {% endif %}
+                            </p>
+                            <p class="mb-0 small text-muted mt-2">Status: 
+                                {% if pagamento and pagamento.status == 'pago' %}
+                                    <span class="text-success fw-bold">✅ Pago</span>
+                                {% else %}
+                                    <span class="text-warning fw-bold">⏳ Aguardando pagamento</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIX -->
+                {% if pedido.metodo_pagamento == 'pix' and pix %}
+                <div class="mt-4 text-center">
+                    <div class="p-4 border rounded-3 bg-light">
+                        <h3 class="h4 texto-primario">💳 Pague com PIX</h3>
+                        <p class="texto-suave">Copie o código abaixo e cole no seu app do banco:</p>
+                        
+                        <div class="bg-white p-3 rounded-3 text-center border">
+                            <p class="fw-bold mb-1">📋 Código PIX (copia e cola):</p>
+                            <code id="pixCode" class="bg-light p-2 rounded d-block border" style="word-break: break-all; font-size: 13px; font-family: monospace;">
+                                {{ pix.pix_code }}
+                            </code>
+                        </div>
+
+                        <div class="mt-3 d-flex flex-wrap justify-content-center gap-2">
+                            <!-- Botão Copiar -->
+                            <button class="btn-croch" onclick="copiarPix()" style="background: #4a9e8f; border-color: #4a9e8f;">
+                                <i class="fas fa-copy me-2"></i> Copiar código
+                            </button>
+                            
+                            <!-- ============================================================ -->
+                            <!-- BOTÃO CONFIRMAR - FORMULÁRIO CORRETO (POST) -->
+                            <!-- ============================================================ -->
+                            <form method="post" action="{{ url_for('confirmar_pagamento', pedido_id=pedido.id) }}" style="display: inline;">
+                                <button type="submit" class="btn-croch" style="background: #238636; border-color: #238636;">
+                                    <i class="fas fa-check me-2"></i> Já paguei, confirmar
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Chave PIX:</strong> {{ pix.chave }}
+                        </div>
+
+                        <div class="alert alert-warning mt-2">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Após o pagamento, clique em <strong>"Já paguei, confirmar"</strong> para agilizar o processamento do seu pedido.
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Pagamento na Entrega -->
+                {% if pedido.metodo_pagamento == 'entrega' %}
+                <div class="mt-4 text-center">
+                    <div class="p-4 border rounded-3 bg-light">
+                        <h3 class="h4 texto-primario">💰 Pagamento na Entrega</h3>
+                        <p class="texto-suave">Seu pedido está confirmado! Você pagará no ato da entrega.</p>
+                        
+                        <div class="mt-3">
+                            <a href="{{ url_for('meus_pedidos') }}" class="btn-croch">
+                                <i class="fas fa-box me-2"></i> Ver meus pedidos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Status do pagamento (JÁ PAGO) -->
+                {% if pagamento and pagamento.status == 'pago' %}
+                <div class="mt-4 text-center p-3 bg-success text-white rounded-3">
+                    <i class="fas fa-check-circle fa-3x mb-2"></i>
+                    <h3>Pagamento Confirmado! 🎉</h3>
+                    <p>Seu pedido já está sendo preparado.</p>
+                    <a href="{{ url_for('meus_pedidos') }}" class="btn btn-light mt-2">
+                        <i class="fas fa-box me-2"></i> Acompanhar pedido
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- Botão voltar -->
+                <div class="mt-4 text-center">
+                    <a href="{{ url_for('meus_pedidos') }}" class="text-muted small">
+                        <i class="fas fa-arrow-left me-1"></i> Voltar para meus pedidos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copiarPix() {
+    const code = document.getElementById('pixCode').textContent;
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(() => {
+            alert('✅ Código PIX copiado com sucesso!');
+        }).catch(() => {
+            copiarPixFallback(code);
+        });
+    } else {
+        copiarPixFallback(code);
+    }
+}
+
+function copiarPixFallback(code) {
+    const textarea = document.createElement('textarea');
+    textarea.value = code;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    
+    try {
+        document.execCommand('copy');
+        alert('✅ Código PIX copiado com sucesso!');
+    } catch (err) {
+        alert('❌ Erro ao copiar. Selecione o código manualmente.');
+    }
+    
+    document.body.removeChild(textarea);
+}
+</script>
+
+<style>
+code {
+    user-select: all;
+}
+</style>
+{% endblock %}

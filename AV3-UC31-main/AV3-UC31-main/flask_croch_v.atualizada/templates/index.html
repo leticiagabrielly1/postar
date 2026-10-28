@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cartao_produto %}
+
+{% block titulo %}CROCH Salgadaria | Mini coxinhas e combos para festa{% endblock %}
+{% block descricao %}Peça mini coxinhas, bolinhas de queijo, kibes e combos para festa na CROCH Salgadaria. Feitos na hora, entrega rápida.{% endblock %}
+
+{% block conteudo %}
+<section class="hero" aria-labelledby="titulo-hero">
+  <div class="container-croch row align-items-center g-4 py-5">
+    <div class="col-12 col-md-6">
+      <p class="font-display fs-5 texto-secundario" style="letter-spacing:.2em">CROCH SALGADARIA</p>
+      <h1 id="titulo-hero" class="display-2 texto-primario">Crocante por fora,<br>irresistível por dentro</h1>
+      <p class="fs-5 texto-suave" style="max-width:28rem">
+        Mini coxinhas e salgados feitos na hora para deixar a sua festa ainda mais gostosa.
+      </p>
+      <div class="d-flex flex-wrap gap-2 mt-3">
+        <a class="btn-croch" href="{{ url_for('cardapio') }}">Peça agora</a>
+        <a class="btn-croch-outline" href="{{ url_for('sobre') }}">Conheça a CROCH</a>
+      </div>
+      <ul class="list-unstyled d-flex flex-wrap gap-3 mt-3 fw-bold texto-secundario small">
+        <li>✓ Feitos na hora</li>
+        <li>✓ Entrega rápida</li>
+        <li>✓ Sabor que encanta</li>
+      </ul>
+    </div>
+    <div class="col-12 col-md-6 text-center">
+      <img src="{{ imagem_de('coxinha') }}" alt="Mini coxinha crocante da CROCH recheada com frango"
+           width="700" height="700" style="max-height:420px;width:auto" class="img-fluid">
+    </div>
+  </div>
+</section>
+
+<section class="container-croch py-5" aria-labelledby="titulo-destaques">
+  <h2 id="titulo-destaques" class="display-5 text-center texto-primario">Os queridinhos da casa</h2>
+  <p class="text-center texto-suave">Salgados fresquinhos e irresistíveis para todos os momentos</p>
+  <div class="row g-4 mt-1">
+    {% for p in destaques %}
+      <div class="col-12 col-sm-6 col-lg-3">{{ cartao_produto(p) }}</div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="fundo-accent py-5" aria-labelledby="titulo-combos">
+  <div class="container-croch">
+    <h2 id="titulo-combos" class="display-5 text-center texto-primario">Combos para festa</h2>
+    <div class="row g-4 mt-1">
+      {% for c in combos %}
+        <div class="col-12 col-sm-6 col-lg-3">
+          <a href="{{ url_for('produto', produto_id=c.id) }}" class="text-decoration-none">
+            <article class="card-croch card-croch-hover d-flex flex-column overflow-hidden h-100">
+              <div class="faixa-combo">{{ c.nome }}</div>
+              <img src="{{ imagem_de(c.imagem) }}" alt="Caixa do {{ c.nome }} com salgados sortidos"
+                   width="800" height="800" loading="lazy" class="img-produto">
+              <div class="d-flex flex-column gap-2 p-3 flex-grow-1">
+                <ul class="list-unstyled small mb-0">
+                  {% for b in c.beneficios %}<li>✓ {{ b }}</li>{% endfor %}
+                </ul>
+                <p class="text-center mt-auto mb-0">
+                  <span class="d-block small fw-bold text-uppercase texto-secundario">A partir de</span>
+                  <span class="font-display display-6 texto-primario">{{ c.preco | moeda }}</span>
+                </p>
+                {% if not is_admin %}
+                  <form method="post" action="{{ url_for('carrinho_adicionar', produto_id=c.id) }}" onclick="event.stopPropagation();">
+                    <input type="hidden" name="voltar" value="{{ url_for('inicio') }}">
+                    <button class="btn-croch w-100" type="submit">Pedir agora</button>
+                  </form>
+                {% else %}
+                  <p class="text-center small texto-suave">Administradores não podem comprar.</p>
+                {% endif %}
+              </div>
+            </article>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="container-croch py-5" aria-labelledby="titulo-depoimentos">
+  <h2 id="titulo-depoimentos" class="display-5 text-center texto-primario">Quem prova, aprova</h2>
+  <div class="row g-4 mt-1">
+    {% for d in [
+      {'nome': 'Ana Paula', 'texto': 'Os salgados chegaram quentinhos e a festa foi um sucesso!'},
+      {'nome': 'Rodrigo M.', 'texto': 'Melhor mini coxinha da cidade, sem exagero. Massa perfeita.'},
+      {'nome': 'Juliana S.', 'texto': 'Combo 100 rendeu demais e o atendimento foi impecável.'}
+    ] %}
+      <div class="col-12 col-md-4">
+        <figure class="card-croch p-4 h-100">
+          <div class="texto-dourado" aria-label="Avaliação 5 de 5 estrelas">★★★★★</div>
+          <blockquote class="small texto-suave mt-2">“{{ d.texto }}”</blockquote>
+          <figcaption class="fw-bold texto-primario">{{ d.nome }}</figcaption>
+        </figure>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Google Maps -->
+{% if mapa_url %}
+<section class="container-croch py-5" aria-labelledby="titulo-mapa">
+  <h2 id="titulo-mapa" class="display-5 text-center texto-primario">Onde estamos</h2>
+  <p class="text-center texto-suave">Visite nossa loja e experimente o sabor da CROCH.</p>
+  <div class="mt-3">
+    {{ mapa_url | safe }}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

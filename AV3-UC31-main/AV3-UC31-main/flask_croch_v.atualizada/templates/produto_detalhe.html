@@ -1,0 +1,392 @@
+{% extends "base.html" %}
+
+{% block titulo %}{{ produto.nome }} | CROCH Salgadaria{% endblock %}
+
+{% block estilos_especificos %}
+<style>
+    .produto-imagem-principal {
+        position: relative;
+        overflow: hidden;
+        border-radius: 16px;
+        transition: all 0.4s ease;
+        background: #f8f9fa;
+    }
+
+    .produto-imagem-principal img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .produto-imagem-principal:hover img {
+        transform: scale(1.05);
+    }
+
+    .badge-status {
+        padding: 6px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 50px;
+    }
+
+    .btn-voltar {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #4a9e8f;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        padding: 8px 0;
+    }
+
+    .btn-voltar:hover {
+        color: #3a8a7a;
+        transform: translateX(-5px);
+    }
+
+    .btn-voltar i {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-voltar:hover i {
+        transform: translateX(-5px);
+    }
+
+    .card-croch {
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .card-croch:hover {
+        box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+    }
+
+    .btn-quantidade {
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 50%;
+        background: #f5f9f8;
+        color: #1a2e3f;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-quantidade:hover {
+        background: #4a9e8f;
+        color: white;
+    }
+
+    .btn-quantidade:active {
+        transform: scale(0.95);
+    }
+
+    .sabor-select {
+        border-radius: 8px;
+        border: 2px solid #e8f0ee;
+        padding: 10px 14px;
+        font-size: 14px;
+        width: 100%;
+        background: white;
+        transition: all 0.3s ease;
+    }
+
+    .sabor-select:focus {
+        border-color: #4a9e8f;
+        box-shadow: 0 0 0 3px rgba(74, 158, 143, 0.1);
+        outline: none;
+    }
+
+    body.modo-escuro .sabor-select {
+        background: #0d1117;
+        border-color: #30363d;
+        color: #e6edf3;
+    }
+
+    body.modo-escuro .sabor-select:focus {
+        border-color: #58a6ff;
+    }
+
+    body.modo-escuro .produto-imagem-principal {
+        background: #161b22;
+    }
+
+    body.modo-escuro .card-croch {
+        background: #161b22;
+        border: 1px solid #30363d;
+    }
+
+    body.modo-escuro .card-croch:hover {
+        box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    }
+
+    body.modo-escuro .breadcrumb-item a {
+        color: #58a6ff;
+    }
+
+    body.modo-escuro .breadcrumb-item.active {
+        color: #8b949e;
+    }
+
+    body.modo-escuro .breadcrumb-item::before {
+        color: #8b949e;
+    }
+
+    body.modo-escuro .btn-quantidade {
+        background: #21262d;
+        color: #e6edf3;
+    }
+
+    body.modo-escuro .btn-quantidade:hover {
+        background: #4a9e8f;
+        color: white;
+    }
+
+    body.modo-escuro .campo-croch {
+        background: #0d1117;
+        border-color: #30363d;
+        color: #e6edf3;
+    }
+
+    body.modo-escuro .texto-suave {
+        color: #8b949e;
+    }
+
+    body.modo-escuro .texto-primario {
+        color: #58a6ff;
+    }
+
+    @media (max-width: 768px) {
+        .produto-imagem-principal img {
+            height: 250px;
+        }
+        .display-5 {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block conteudo %}
+<div class="container-croch py-5">
+    <!-- Botão Voltar -->
+    <div class="mb-4">
+        <a href="{{ request.referrer or url_for('cardapio') }}" class="btn-voltar">
+            <i class="fas fa-arrow-left"></i>
+            Voltar
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Imagem -->
+        <div class="col-12 col-md-6">
+            <div class="card-croch p-3 produto-imagem-principal">
+                <img src="{{ imagem_de(produto.imagem) }}" alt="{{ produto.nome }}" loading="lazy">
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="col-12 col-md-6">
+            <div class="card-croch p-4">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('inicio') }}">Início</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('cardapio') }}">Cardápio</a></li>
+                        <li class="breadcrumb-item active">{{ produto.nome|truncate(30) }}</li>
+                    </ol>
+                </nav>
+
+                <h1 class="display-5 fw-bold texto-primario">{{ produto.nome }}</h1>
+                
+                <!-- Preço e Badges -->
+                <div class="my-3 d-flex align-items-center flex-wrap gap-2">
+                    <span class="display-6 fw-bold texto-primario">{{ produto.preco|moeda }}</span>
+                    {% if produto.destaque %}
+                    <span class="badge bg-warning text-dark badge-status">
+                        <i class="fas fa-star me-1"></i> Destaque
+                    </span>
+                    {% endif %}
+                    {% if not produto.disponivel %}
+                    <span class="badge bg-danger badge-status">
+                        <i class="fas fa-times-circle me-1"></i> Indisponível
+                    </span>
+                    {% else %}
+                    <span class="badge bg-success badge-status">
+                        <i class="fas fa-check-circle me-1"></i> Disponível
+                    </span>
+                    {% endif %}
+                </div>
+
+                <!-- Descrição -->
+                <div class="mb-4">
+                    <p class="texto-suave">{{ produto.descricao or "Delicioso salgado feito com ingredientes selecionados e muito amor. Perfeito para qualquer momento!" }}</p>
+                </div>
+
+                <!-- Seleção de Sabor (se for bebida) -->
+                {% if produto.categoria == 'Bebidas' and produto.sabores %}
+                <div class="mb-3">
+                    <label for="sabor_select" class="fw-bold">Selecione o sabor:</label>
+                    <select name="sabor" id="sabor_select" class="sabor-select mt-1" required>
+                        <option value="">-- Escolha um sabor --</option>
+                        {% for sabor in produto.sabores %}
+                        <option value="{{ sabor }}">{{ sabor }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+
+                <!-- Informações Adicionais (se for combo) -->
+                {% if produto.unidades %}
+                <div class="mb-3">
+                    <span class="badge bg-info text-dark">
+                        <i class="fas fa-box me-1"></i> {{ produto.unidades }} unidades
+                    </span>
+                    {% if produto.beneficios %}
+                    <ul class="list-unstyled mt-2 small">
+                        {% for beneficio in produto.beneficios %}
+                        <li><i class="fas fa-check text-success me-1"></i> {{ beneficio }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Formulário de Compra -->
+                {% if produto.disponivel %}
+                <form method="post" action="{{ url_for('carrinho_adicionar', produto_id=produto.id) }}" id="formCarrinho">
+                    <input type="hidden" name="voltar" value="{{ url_for('carrinho_view') }}">
+                    
+                    <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+                        <label for="qtd" class="fw-bold">Quantidade:</label>
+                        <div class="d-flex align-items-center">
+                            <button type="button" class="btn-quantidade" onclick="alterarQuantidade(-1)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" name="qtd" id="qtd" value="1" min="1" max="99" class="campo-croch" style="width: 70px; text-align: center;">
+                            <button type="button" class="btn-quantidade" onclick="alterarQuantidade(1)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-croch w-100" id="btnComprar">
+                        <i class="fas fa-cart-plus me-2"></i>
+                        Adicionar ao Carrinho
+                    </button>
+                </form>
+
+                <!-- Aviso para selecionar sabor -->
+                <div id="aviso_sabor" class="alert alert-warning mt-2" style="display: none; font-size: 14px;">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Por favor, selecione um sabor antes de adicionar ao carrinho.
+                </div>
+                {% else %}
+                <div class="alert alert-danger d-flex align-items-center gap-2">
+                    <i class="fas fa-exclamation-circle fa-2x"></i>
+                    <div>
+                        <strong>Produto indisponível</strong>
+                        <p class="mb-0 small">Este produto está temporariamente indisponível. <a href="{{ url_for('cardapio') }}" class="text-decoration-underline">Veja outros salgados</a></p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <hr class="my-3">
+
+                <!-- Informações Adicionais -->
+                <div class="row small text-muted g-2">
+                    <div class="col-6">
+                        <p class="mb-1"><i class="fas fa-tag me-1"></i> Categoria: {{ produto.categoria }}</p>
+                        <p class="mb-0"><i class="fas fa-clock me-1"></i> Feito na hora</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="mb-1"><i class="fas fa-truck me-1"></i> Entrega rápida</p>
+                        <p class="mb-0"><i class="fas fa-check-circle me-1"></i> Qualidade garantida</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Produtos Relacionados -->
+    {% set relacionados = todos_produtos()|selectattr('id', '!=', produto.id)|selectattr('categoria', '==', produto.categoria)|list %}
+    {% if relacionados %}
+    <div class="mt-5 pt-4 border-top">
+        <h2 class="h3 texto-primario mb-4">
+            <i class="fas fa-thumbs-up me-2"></i>
+            Você também pode gostar
+        </h2>
+        <div class="row g-3">
+            {% for rel in relacionados[:4] %}
+            {% if rel.disponivel %}
+            <div class="col-6 col-md-3">
+                <div class="card-croch p-2 text-center h-100">
+                    <a href="{{ url_for('produto', produto_id=rel.id) }}" class="text-decoration-none">
+                        <img src="{{ imagem_de(rel.imagem) }}" alt="{{ rel.nome }}" class="img-fluid rounded-3" style="height: 120px; width: 100%; object-fit: cover;">
+                        <h3 class="h6 mt-2 texto-escuro">{{ rel.nome }}</h3>
+                        <p class="fw-bold texto-primario mb-0">{{ rel.preco|moeda }}</p>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function alterarQuantidade(delta) {
+    const input = document.getElementById('qtd');
+    let valor = parseInt(input.value) || 1;
+    valor = Math.max(1, Math.min(99, valor + delta));
+    input.value = valor;
+}
+
+// Validação de sabor para bebidas - NÃO BLOQUEIA O ENVIO
+document.getElementById('formCarrinho')?.addEventListener('submit', function(e) {
+    const saborSelect = document.getElementById('sabor_select');
+    const aviso = document.getElementById('aviso_sabor');
+    
+    // Se tiver select de sabor e estiver vazio, mostra aviso e impede envio
+    if (saborSelect && !saborSelect.value) {
+        e.preventDefault();
+        aviso.style.display = 'block';
+        saborSelect.style.borderColor = '#ff6b6b';
+        return false;
+    }
+    
+    // Se tiver select e estiver preenchido, permite o envio
+    return true;
+});
+
+// Esconde aviso quando selecionar um sabor
+document.getElementById('sabor_select')?.addEventListener('change', function() {
+    const aviso = document.getElementById('aviso_sabor');
+    if (this.value) {
+        aviso.style.display = 'none';
+        this.style.borderColor = '#4a9e8f';
+    }
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    if (e.key === '+' || e.key === '=') {
+        e.preventDefault();
+        alterarQuantidade(1);
+    }
+    if (e.key === '-') {
+        e.preventDefault();
+        alterarQuantidade(-1);
+    }
+});
+</script>
+{% endblock %}

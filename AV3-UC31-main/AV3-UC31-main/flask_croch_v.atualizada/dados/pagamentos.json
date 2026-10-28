@@ -1,0 +1,38 @@
+[
+  {
+    "id": "pag-20260805051439",
+    "pedido_id": "PD-20260805051439",
+    "status": "pendente",
+    "metodo": null,
+    "data_criacao": "2026-08-05T05:14:39",
+    "data_pagamento": null,
+    "valor": null
+  },
+  {
+    "id": "pag-20260805051539",
+    "pedido_id": "PD-20260805051539",
+    "status": "pendente",
+    "metodo": null,
+    "data_criacao": "2026-08-05T05:15:39",
+    "data_pagamento": null,
+    "valor": null
+  },
+  {
+    "id": "pag-20260805052154",
+    "pedido_id": "PD-20260805052154",
+    "status": "pago",
+    "metodo": "pix",
+    "data_criacao": "2026-08-05T05:21:54",
+    "data_pagamento": "2026-08-05T05:28:29",
+    "valor": null
+  },
+  {
+    "id": "pag-20260805091232",
+    "pedido_id": "PD-20260805091232",
+    "status": "pago",
+    "metodo": "pix",
+    "data_criacao": "2026-08-05T09:12:32",
+    "data_pagamento": "2026-08-05T09:12:44",
+    "valor": null
+  }
+]
