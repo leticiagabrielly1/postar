@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block title %}{{ pizza.nome }} | FoodSite{% endblock %}{% block content %}<h1>{{ pizza.nome }}</h1><img class="detail-image" src="{{ url_for('static',filename=pizza.imagem) }}" alt="{{ pizza.nome }}"><p class="lead">{{ pizza.descricao }}</p><a class="button" href="{{ url_for('pedidos') }}">Voltar ao cardápio</a>{% endblock %}

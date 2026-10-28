@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodSite - Sobre Nós</title>
+  
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      background: #fff;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      color: #ff6347;
+    }
+
+    /* Hero */
+    .hero-sobre {
+      height: 60vh;
+      background: url('https://images.unsplash.com/photo-1528605248644-14dd04022da1') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      margin-top: 70px; /* espaço para navbar */
+    }
+
+    .hero-sobre::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+    }
+
+    .hero-content {
+      position: relative;
+      color: #fff;
+      z-index: 1;
+      max-width: 800px;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    /* Seção História */
+    .historia {
+      padding: 80px 50px;
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .historia-texto {
+      flex: 1;
+    }
+
+    .historia-texto h2 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      color: #ff4500;
+    }
+
+    .historia-texto p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      color: #555;
+    }
+
+    .historia-img {
+      flex: 1;
+    }
+
+    .historia-img img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Valores */
+    .valores {
+      background: #f9f9f9;
+      padding: 80px 50px;
+      text-align: center;
+    }
+
+    .valores h2 {
+      font-size: 2rem;
+      margin-bottom: 40px;
+      color: #ff4500;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      color: #ff6347;
+    }
+
+    .card p {
+      color: #555;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .historia {
+        flex-direction: column;
+        text-align: center;
+      }
+      .nav-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+<style>
+.site-nav{position:sticky;top:0;z-index:2000;background:#1f1f1f;color:white;display:flex;justify-content:space-between;align-items:center;gap:15px;padding:17px 6%;flex-wrap:wrap;box-sizing:border-box}.site-nav a{color:white;text-decoration:none}.site-nav .brand{font-size:1.5rem;font-weight:800}.site-links{display:flex;gap:20px;flex-wrap:wrap}.site-links a:hover{color:#ff7357}@media(max-width:550px){.site-nav{justify-content:center}.site-links{justify-content:center;gap:12px;font-size:.9rem}}
+</style></head>
+<body>
+  <!-- Navbar -->
+  <nav class="site-nav"><a class="brand" href="{{ url_for('home') }}">FoodSite</a><div class="site-links"><a href="{{ url_for('home') }}">Início</a><a href="{{ url_for('pedidos') }}">Pedidos</a><a href="{{ url_for('sobre') }}">Sobre</a><a href="{{ url_for('contato') }}">Contato</a></div></nav>
+
+  <!-- Hero -->
+  <div class="photo-gallery" aria-label="Nossas pizzas">
+    <img src="{{ url_for('static',filename='calabresa.jpg') }}" alt="Pizza de calabresa">
+    <img src="{{ url_for('static',filename='frango.jpg') }}" alt="Pizza de frango">
+    <img src="{{ url_for('static',filename='pizza.jpg') }}" alt="Pizza artesanal">
+  </div>
+  <style>.photo-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:28px 6%;margin-top:12px}.photo-gallery img{width:100%;height:250px;object-fit:cover;border-radius:14px}@media(max-width:650px){.photo-gallery{grid-template-columns:1fr}.photo-gallery img{height:200px}}</style>
+
+  <!-- História -->
+  <section class="historia">
+    <div class="historia-texto">
+      <h2>Nossa História</h2>
+      <p>
+        No <strong>FoodSite</strong>, acreditamos que cada refeição é uma experiência única.
+        Desde nossa fundação, buscamos unir tradição e inovação para criar pratos que encantam.
+      </p>
+      <p>
+        Trabalhamos com ingredientes frescos e selecionados, sempre com o objetivo de proporcionar
+        momentos inesquecíveis à mesa.
+      </p>
+    </div>
+    <div class="historia-img">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Equipe de cozinha">
+    </div>
+  </section>
+
+  <!-- Valores -->
+  <section class="valores">
+    <h2>Nossos Valores</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Qualidade</h3>
+        <p>Selecionamos os melhores ingredientes para garantir sabor e excelência.</p>
+      </div>
+      <div class="card">
+        <h3>Tradição</h3>
+        <p>Respeitamos receitas clássicas, trazendo o melhor da culinária.</p>
+      </div>
+      <div class="card">
+        <h3>Inovação</h3>
+        <p>Estamos sempre criando novas combinações para surpreender nossos clientes.</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

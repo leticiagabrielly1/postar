@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodSite - Bem-vindo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #fff;
+      color: #333;
+    }
+
+    /* Navbar */
+ /* CSS */
+nav {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #ff6347;
+}
+
+/* Hamburger menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: #fff;
+  transition: 0.3s;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    height: 100vh;
+    width: 220px;
+    background: rgba(0,0,0,0.95);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    transition: right 0.3s ease;
+  }
+
+  .nav-links.active {
+    right: 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  /* animação do hambúrguer virando X */
+  .hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+  }
+}
+
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #ff6347;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+    }
+
+    .hero-content {
+      position: relative;
+      color: #fff;
+      z-index: 1;
+      max-width: 700px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: slideDown 1.5s ease;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      animation: fadeIn 2.5s ease;
+    }
+
+    .btn {
+      padding: 15px 40px;
+      background: linear-gradient(135deg, #ff6347, #ff4500);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #ff4500, #ff6347);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    /* Cards Section */
+    .cards {
+      padding: 80px 50px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      background: #f9f9f9;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    .card-content h3 {
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+      color: #ff4500;
+    }
+
+    .card-content p {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    @keyframes slideDown {
+      from {transform: translateY(-50px); opacity: 0;}
+      to {transform: translateY(0); opacity: 1;}
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+      .btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+      }
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+<style>
+.site-nav{position:sticky;top:0;z-index:2000;background:#1f1f1f;color:white;display:flex;justify-content:space-between;align-items:center;gap:15px;padding:17px 6%;flex-wrap:wrap;box-sizing:border-box}.site-nav a{color:white;text-decoration:none}.site-nav .brand{font-size:1.5rem;font-weight:800}.site-links{display:flex;gap:20px;flex-wrap:wrap}.site-links a:hover{color:#ff7357}@media(max-width:550px){.site-nav{justify-content:center}.site-links{justify-content:center;gap:12px;font-size:.9rem}}
+</style></head>
+<body>
+ <!-- HTML -->
+<nav class="site-nav"><a class="brand" href="{{ url_for('home') }}">FoodSite</a><div class="site-links"><a href="{{ url_for('home') }}">Início</a><a href="{{ url_for('pedidos') }}">Pedidos</a><a href="{{ url_for('sobre') }}">Sobre</a><a href="{{ url_for('contato') }}">Contato</a></div></nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Sabores Inesquecíveis</h1>
+      <p>Descubra pratos que encantam o paladar e tornam cada refeição uma experiência única.</p>
+      <a href="{{ url_for('pedidos') }}" class="btn">Ver Cardápio</a>
+    </div>
+  </section>
+
+  <!-- Cards -->
+  <section class="cards" id="menu">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092" alt="Pizza gourmet">
+      <div class="card-content">
+        <h3>Pizza Gourmet</h3>
+        <p>Feita com ingredientes frescos e massa artesanal.</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2" alt="Hambúrguer artesanal">
+      <div class="card-content">
+        <h3>Hambúrguer Artesanal</h3>
+        <p>Suculento, com blend exclusivo e acompanhamentos irresistíveis.</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Prato sofisticado">
+      <div class="card-content">
+        <h3>Prato Sofisticado</h3>
+        <p>Uma explosão de sabores para ocasiões especiais.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    © 2026 FoodSite - Todos os direitos reservados
+  </footer>
+</body>
+</html>
+
